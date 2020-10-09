@@ -14,7 +14,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using F4DEDTournaments.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Model;
 
 namespace F4DEDTournaments
 {
