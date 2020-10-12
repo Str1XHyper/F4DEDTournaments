@@ -1,0 +1,53 @@
+﻿@model CreateTeamViewModel
+
+@{
+
+    var Countries = Html.GetEnumSelectList<Countries>().OrderBy(a => a.ToString(), StringComparer.CurrentCultureIgnoreCase);
+    var Languages = Html.GetEnumSelectList<Languages>().OrderBy(a => a.ToString(), StringComparer.CurrentCultureIgnoreCase);
+    var Games = Html.GetEnumSelectList<Games>().OrderBy(a => a.ToString(), StringComparer.CurrentCultureIgnoreCase);
+}
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="TeamName"></label>
+        <input asp-for="TeamName" class="form-control" />
+        <span asp-validation-for="TeamName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Country"></label>
+        <select asp-for="Country" asp-items="Countries" class="form-control" > </select>
+        <span asp-validation-for="Country" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Language"></label>
+        <select asp-for="Language" asp-items="Languages" class="form-control" > </select>
+        <span asp-validation-for="Language" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Played Game</label>
+        <select asp-for="PlayedGame" asp-items="Games" class="form-control"> </select>
+        <span asp-validation-for="PlayedGame" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>MinimumElo</label>
+        <input asp-for="MinimumElo" class="form-control" />
+        <span asp-validation-for="MinimumElo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="MinimumAge"></label>
+        <input asp-for="MinimumAge" class="form-control" />
+        <span asp-validation-for="MinimumAge" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="IsPrivate"></label>
+        <input asp-for="IsPrivate" class="form-control" />
+        <span asp-validation-for="IsPrivate" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
