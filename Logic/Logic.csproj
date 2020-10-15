@@ -9,4 +9,10 @@
     <ProjectReference Include="..\Model\Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="IdGenerator">
+      <HintPath>C:\Users\Tijn van Veghel\source\repos\IdGenerator\IdGenerator\bin\Debug\netstandard2.0\IdGenerator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>
