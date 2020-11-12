@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using F4DEDTournaments.Models;
 using Logic;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Model;
 
@@ -11,8 +12,13 @@ namespace F4DEDTournaments.Controllers
 {
     public class TeamController : Controller
     {
+        private readonly UserManager<AppUser> userManager;
         TeamManager teamManager = new TeamManager();
 
+        public TeamController(UserManager<AppUser> userManager)
+        {
+            this.userManager = userManager;
+        }
 
         [HttpGet]
         public IActionResult CreateTeam()
@@ -20,8 +26,10 @@ namespace F4DEDTournaments.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult CreateTeam(CreateTeamViewModel model)
+        public async Task<IActionResult> CreateTeam(CreateTeamViewModel model)
         {
+            var currentUser = await userManager.GetUserAsync(User);
+
             TeamDTO teamDTO = new TeamDTO()
             {
                 TeamName = model.TeamName,
@@ -33,7 +41,7 @@ namespace F4DEDTournaments.Controllers
                 IsPrivate = model.IsPrivate,
                 PlayedGame = model.PlayedGame
             };
-            var result = teamManager.CreateTeam(teamDTO);
+            var result = teamManager.CreateTeam(teamDTO,currentUser.Id);
             switch (result)
             {
                 case TeamErrorCodes.NoError:
@@ -46,6 +54,32 @@ namespace F4DEDTournaments.Controllers
             return View();
 
             //Return to team view;
+        }
+
+
+        public IActionResult ViewTeam(string TeamID)
+        {
+            if(TeamID == string.Empty || TeamID == null)
+            {
+                return Redirect("CreateTeam");
+            }
+
+            TeamID = "6Zwk5q1WEYHS";
+            var team = teamManager.GetTeamByID(TeamID);
+
+            TeamViewModel model = new TeamViewModel()
+            {
+                TeamID = team.TeamID,
+                TeamName = team.TeamName,
+                MinimumAge = team.MinimumAge,
+                MinimumElo = team.MinimumElo,
+                Country = team.Country,
+                Language = team.Language,
+                Description = team.Description,
+                IsPrivate = team.IsPrivate,
+                PlayedGame = team.PlayedGame
+            };
+            return View(model);
         }
     }
 }

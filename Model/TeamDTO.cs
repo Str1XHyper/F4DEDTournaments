@@ -6,10 +6,10 @@ namespace Model
 {
     public enum Games
     {
-        CounterStrike = 0,
-        CallOfDuty = 1,
-        RainbowSixSiege = 2,
-        Valorant = 3,
+        CounterStrike = 1,
+        CallOfDuty = 2,
+        RainbowSixSiege = 3,
+        Valorant = 4,
     }
 
     public enum Countries

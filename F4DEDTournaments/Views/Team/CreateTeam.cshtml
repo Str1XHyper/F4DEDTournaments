@@ -34,13 +34,13 @@
         <span asp-validation-for="PlayedGame" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <label>MinimumElo</label>
-        <input asp-for="MinimumElo" class="form-control" />
+        <label>Minimum Elo</label>
+        <input asp-for="MinimumElo" min="0" value="1500" class="form-control" />
         <span asp-validation-for="MinimumElo" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="MinimumAge"></label>
-        <input asp-for="MinimumAge" class="form-control" />
+        <input asp-for="MinimumAge" min="0" max="50" value="18" class="form-control" />
         <span asp-validation-for="MinimumAge" class="text-danger"></span>
     </div>
     <div class="form-group">

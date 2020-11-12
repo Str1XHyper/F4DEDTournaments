@@ -39,7 +39,7 @@ namespace DAL
             }
             catch (Exception e)
             {
-                string eString = e.ToString();
+                return null;
             }
             cnn.Close();
             return values;
@@ -60,7 +60,7 @@ namespace DAL
             } 
             catch(Exception ex)
             {
-                string test = ex.ToString();
+                cnn.Close();
                 return false;
             }
             cnn.Close();

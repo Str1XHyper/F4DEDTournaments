@@ -1,8 +1,41 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+    <head>
+        <link rel="stylesheet" href="~/css/site.css" />
+    </head>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="w-66 mx-auto pb-5 pt-2">
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+            <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <a asp-action="Index" asp-controller="Tournaments" asp-route-game="CSGO">
+                    <img class="d-block w-100" src="~/images/Games/CSGO1920x1080.jpg" />
+                </a>
+            </div>
+            <div class="carousel-item">
+                <a asp-action="Index" asp-controller="Tournaments" asp-route-game="COD:MW">
+                    <img class="d-block w-100" src="~/images/Games/ModernWarfare1920x1080.png" />
+                </a>
+            </div>
+            <div class="carousel-item">
+                <a asp-action="Index" asp-controller="Tournaments" asp-route-game="VALO">
+                    <img class="d-block w-100" src="~/images/Games/Valorant1920x1080.png" />
+                </a>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
 </div>
