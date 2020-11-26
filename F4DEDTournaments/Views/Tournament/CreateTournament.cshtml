@@ -1,0 +1,49 @@
+﻿@model F4DEDTournaments.Models.Tournament.CreateTournamentViewModel
+@using Model 
+
+@{
+    ViewData["Title"] = "View";
+    var Games = Html.GetEnumSelectList<Games>().OrderBy(a => a.ToString(), StringComparer.CurrentCultureIgnoreCase);
+}
+<h1>Create Tournament</h1>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateTournament" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrganisationID" class="control-label"></label>
+                <input asp-for="OrganisationID" class="form-control" />
+                <span asp-validation-for="OrganisationID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Size" class="control-label"></label>
+                <input asp-for="Size" class="form-control" />
+                <span asp-validation-for="Size" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Prize" class="control-label"></label>
+                <input asp-for="Prize" class="form-control" />
+                <span asp-validation-for="Prize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BuyIn" class="control-label"></label>
+                <input asp-for="BuyIn" class="form-control" />
+                <span asp-validation-for="BuyIn" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Game" class="control-label"></label>
+                <select asp-for="Game" asp-items="Games" class="form-control" />
+                <span asp-validation-for="Game" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+

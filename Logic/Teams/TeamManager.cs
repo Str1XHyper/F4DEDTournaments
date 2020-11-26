@@ -22,24 +22,24 @@ namespace Logic
 
     public class TeamManager
     {
-        ITeamDB teamDB = new TeamDB();
+        ITeamCollectionDB teamManagerDB = new TeamManagerDB();
         Generator idGenerator = new Generator();
         public TeamErrorCodes CreateTeam(TeamDTO teamDTO,string UserID)
         {
-            var result = teamDB.FindTeamByName(teamDTO.TeamName);
+            var result = teamManagerDB.FindTeamByName(teamDTO.TeamName);
             if(result != null)
             {
                 return TeamErrorCodes.NameAlreadyExists;
             }
             teamDTO.TeamID = idGenerator.GenerateID(12);
-            teamDB.CreateTeam(teamDTO);
-            teamDB.AddPlayerToTeam(UserID, teamDTO.TeamID, (int) TeamRoles.Owner);
+            teamManagerDB.CreateTeam(teamDTO);
+            teamManagerDB.AddPlayerToTeam(UserID, teamDTO.TeamID, (int) TeamRoles.Owner);
             return TeamErrorCodes.NoError;
         }
 
         public TeamDTO GetTeamByID(string ID)
         {
-            return teamDB.FindTeamByID(ID);
+            return teamManagerDB.FindTeamByID(ID);
         }
     }
 }

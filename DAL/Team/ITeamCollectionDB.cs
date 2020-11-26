@@ -2,7 +2,7 @@
 
 namespace DAL
 {
-    public interface ITeamDB
+    public interface ITeamCollectionDB
     {
         bool AddPlayerToTeam(string PlayerID, string TeamID, int Role);
         bool CreateTeam(TeamDTO teamDTO);

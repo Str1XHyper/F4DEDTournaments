@@ -5,17 +5,12 @@ using System.Text;
 
 namespace DAL
 {
-    public class TeamDB : ITeamDB
+    public class TeamManagerDB : ITeamCollectionDB
     {
         public bool CreateTeam(TeamDTO teamDTO)
         {
             var result = SQLConnection.ExecuteNonSearchQuery($"INSERT INTO Teams (TeamID,TeamName,MinimumElo,IsPrivate,Description,CountryOfOrigin,SpokenLanguage,MinimumAge,PlayedGame) VALUES ('{teamDTO.TeamID}', '{teamDTO.TeamName}','{teamDTO.MinimumElo}','{teamDTO.IsPrivate}','{teamDTO.Description}','{(int)teamDTO.Country}','{(int)teamDTO.Language}','{teamDTO.MinimumAge}','{(int)teamDTO.PlayedGame}'); ");
             return result;
-        }
-
-        public bool AddPlayerToTeam(string PlayerID, string TeamID, int Role)
-        {
-            return SQLConnection.ExecuteNonSearchQuery($"INSERT INTO UserTeams (UserID,TeamID,Role) VALUES ('{PlayerID}', '{TeamID}', '{Role}')");
         }
 
         public bool EditTeam(TeamDTO teamDTO)
@@ -77,6 +72,11 @@ namespace DAL
             }
 
             return teamDTOs;
+        }
+
+        public bool AddPlayerToTeam(string PlayerID, string TeamID, int Role)
+        {
+            throw new NotImplementedException();
         }
     }
 }
