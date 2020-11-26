@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using F4DEDTournaments.Models;
+using F4DEDTournaments.Models.Team;
 using Logic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -57,15 +58,11 @@ namespace F4DEDTournaments.Controllers
         }
 
 
-        public IActionResult ViewTeam(string TeamID)
+        public async Task<IActionResult> ViewTeam()
         {
-            if(TeamID == string.Empty || TeamID == null)
-            {
-                return Redirect("CreateTeam");
-            }
+            var currentUser = await userManager.GetUserAsync(User);
+            var team = teamManager.GetUserTeam(currentUser.Id);
 
-            TeamID = "6Zwk5q1WEYHS";
-            var team = teamManager.GetTeamByID(TeamID);
 
             TeamViewModel model = new TeamViewModel()
             {
@@ -77,7 +74,18 @@ namespace F4DEDTournaments.Controllers
                 Language = team.Language,
                 Description = team.Description,
                 IsPrivate = team.IsPrivate,
-                PlayedGame = team.PlayedGame
+                PlayedGame = team.PlayedGame,
+                Role = team.Role
+            };
+            return View(model);
+        }
+
+        public IActionResult Index()
+        {
+            var teams = teamManager.GetTop10Teams();
+            IndexViewModel model = new IndexViewModel()
+            {
+                Teams = teams
             };
             return View(model);
         }

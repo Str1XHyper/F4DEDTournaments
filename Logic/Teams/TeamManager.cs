@@ -13,13 +13,6 @@ namespace Logic
         NameAlreadyExists = 1,
     }
 
-    public enum TeamRoles
-    {
-        Member = 0,
-        Admin = 1,
-        Owner = 2
-    }
-
     public class TeamManager
     {
         ITeamCollectionDB teamManagerDB = new TeamManagerDB();
@@ -40,6 +33,37 @@ namespace Logic
         public TeamDTO GetTeamByID(string ID)
         {
             return teamManagerDB.FindTeamByID(ID);
+        }
+
+        public UserTeamDTO GetUserTeam(string UserID)
+        {
+            var Team = teamManagerDB.FindTeamByUser(UserID);
+            var role = teamManagerDB.GetUserTeamRole(UserID);
+            UserTeamDTO userTeamDTO = new UserTeamDTO()
+            {
+                TeamID = Team.TeamID,
+                TeamName = Team.TeamName,
+                MinimumAge = Team.MinimumAge,
+                MinimumElo = Team.MinimumElo,
+                Country = Team.Country,
+                Language = Team.Language,
+                Description = Team.Description,
+                IsPrivate = Team.IsPrivate,
+                PlayedGame = Team.PlayedGame,
+            };
+            userTeamDTO.Role = (TeamRoles)role;
+            return userTeamDTO;
+        }
+
+        public List<TeamDTO> GetTop10Teams()
+        {
+            var teams = teamManagerDB.FindAllTeams();
+            if(teams.Count <= 10)
+            {
+                return teams;
+            }
+            teams.RemoveRange(10, teams.Count);
+            return teams;
         }
     }
 }

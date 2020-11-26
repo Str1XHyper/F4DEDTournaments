@@ -21,6 +21,7 @@ namespace DAL.Tournament
             };
             return SQLConnection.ExecuteNonSearchQueryParameters($"INSERT INTO Tournament (ID,Name,OrganisationID,Size,Prize,BuyIn,Game) VALUES (@ID, @Name,@OrganisationID,@Size,@Prize,@BuyIn,@Game);", param);
         }
+        
         public bool EditTournament(TournamentDTO tournamentDTO)
         {
             List<string[]> param = new List<string[]>()
@@ -48,10 +49,25 @@ namespace DAL.Tournament
             return GenerateDTOFromRow(result[0]);
         }
 
+        public TournamentDTO FindTournamentByID(string ID)
+        {
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] {"@ID", ID},
+            };
+            var result = SQLConnection.ExecuteSearchQueryParameters($"SELECT * FROM Tournament Where ID = @ID'", param);
+            return GenerateDTOFromRow(result[0]);
+        }
+        public List<TournamentDTO> FindAllTournaments()
+        {
+            var result = SQLConnection.ExecuteSearchQuery($"SELECT * FROM Tournament");
+            return GenerateDTOsFromRows(result);
+        }
+
         private TournamentDTO GenerateDTOFromRow(string[] row)
         {
 
-            TournamentDTO teamDTO = new TournamentDTO()
+            TournamentDTO tournamentDTO = new TournamentDTO()
             {
                 ID = row[0],
                 Name = row[1],
@@ -61,7 +77,26 @@ namespace DAL.Tournament
                 BuyIn = Convert.ToInt32(row[5]),
                 Game = (Games)Convert.ToInt32(row[6])
             };
-            return teamDTO;
+            return tournamentDTO;
+        }
+
+        private List<TournamentDTO> GenerateDTOsFromRows(List<string[]> rows)
+        {
+            List<TournamentDTO> tournamentDTO = new List<TournamentDTO>();
+            foreach (string[] row in rows)
+            {
+                tournamentDTO.Add(new TournamentDTO()
+                {
+                    ID = row[0],
+                    Name = row[1],
+                    OrganisationID = row[2],
+                    Size = Convert.ToInt32(row[3]),
+                    Prize = Convert.ToInt32(row[4]),
+                    BuyIn = Convert.ToInt32(row[5]),
+                    Game = (Games)Convert.ToInt32(row[6])
+                });
+            }
+            return tournamentDTO;
         }
     }
 }

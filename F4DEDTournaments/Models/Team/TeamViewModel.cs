@@ -25,5 +25,7 @@ namespace F4DEDTournaments.Models
         public int MinimumAge { get; set; }
         [Required]
         public Games PlayedGame { get; set; }
+        public TeamRoles Role { get; set; }
+
     }
 }

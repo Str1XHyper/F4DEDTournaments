@@ -32,5 +32,14 @@ namespace F4DEDTournaments.Controllers
             tournamentManager.CreateTeam(tournamentDTO);
             return View();
         }
+        public IActionResult Index()
+        {
+            var Tournaments = tournamentManager.Get10NextTournaments();
+            IndexViewModel model = new IndexViewModel()
+            {
+                Tournaments = Tournaments
+            };
+            return View(model);
+        }
     }
 }

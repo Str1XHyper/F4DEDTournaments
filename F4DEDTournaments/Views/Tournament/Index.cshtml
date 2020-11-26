@@ -1,0 +1,58 @@
+﻿@model F4DEDTournaments.Models.Tournament.IndexViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                Future tournaments
+            </div>
+            <div class="card-body" style="height:100%">
+                @foreach (var tournament in Model.Tournaments)
+                {
+                <div>
+                    @{
+                        string tournamentString = "";
+                        if (tournament.BuyIn == 0)
+                        {
+                            tournamentString = $"{tournament.Name}, Prize: ${tournament.Prize}, Buy in: Free";
+                            <a class="btn btn-primary text-white">Enter Tournament</a>
+                        }
+                        else
+                        {
+                            tournamentString = $"{tournament.Name}, Prize: ${tournament.Prize}, Buy in: {tournament.BuyIn}";
+
+                            <a class="btn btn-primary text-white">Buy in</a>
+                        }
+                        @tournamentString
+                    }
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="pb-3">
+            <div class="card ">
+                <div class="card-header">
+                    Create
+                </div>
+                <div class="card-body">
+                    Create a tournament
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="card">
+                <div class="card-header">
+                    Active
+                </div>
+                <div class="card-body">
+                    Active Tournaments
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

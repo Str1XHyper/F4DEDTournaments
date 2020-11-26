@@ -26,5 +26,16 @@ namespace Logic.Tournament
             tournamentDB.CreateTournament(tournamentDTO);
             return TournamentErrorCodes.NoError;
         }
+
+        public List<TournamentDTO> Get10NextTournaments()
+        {
+            var tournaments = tournamentDB.FindAllTournaments();
+            if (tournaments.Count <= 10)
+            {
+                return tournaments;
+            }
+            tournaments.RemoveRange(10, tournaments.Count);
+            return tournaments;
+        }
     }
 }

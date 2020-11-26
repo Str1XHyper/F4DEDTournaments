@@ -1,6 +1,35 @@
-﻿@model TeamViewModel
+﻿@model F4DEDTournaments.Models.Team.IndexViewModel;
+@using Model;
 @{
     ViewData["Title"] = "Index";
 }
 
+@foreach (TeamDTO team in Model.Teams)
+{
+    <div class="pb-3">
+
+        <div class="card ">
+            <div class="card-header">
+                @team.TeamName
+            </div>
+            <div class="card-body">
+                @team.Description
+            </div>
+            <div class="card-footer">
+                @if (team.IsPrivate)
+                {
+                    <a class="btn btn-primary">
+                        Send invite
+                    </a>
+                }
+                else
+                {
+                    <a class="btn btn-primary">
+                        Join
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+}
 

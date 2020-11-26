@@ -9,18 +9,45 @@ namespace DAL
     {
         public bool CreateTeam(TeamDTO teamDTO)
         {
-            var result = SQLConnection.ExecuteNonSearchQuery($"INSERT INTO Teams (TeamID,TeamName,MinimumElo,IsPrivate,Description,CountryOfOrigin,SpokenLanguage,MinimumAge,PlayedGame) VALUES ('{teamDTO.TeamID}', '{teamDTO.TeamName}','{teamDTO.MinimumElo}','{teamDTO.IsPrivate}','{teamDTO.Description}','{(int)teamDTO.Country}','{(int)teamDTO.Language}','{teamDTO.MinimumAge}','{(int)teamDTO.PlayedGame}'); ");
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] { "@TeamID", teamDTO.TeamID},
+                new string[] { "@TeamName", teamDTO.TeamName},
+                new string[] { "@MinimumElo", teamDTO.MinimumElo.ToString()},
+                new string[] { "@IsPrivate", (Convert.ToInt32(teamDTO.IsPrivate)).ToString()},
+                new string[] { "@Description", teamDTO.Description},
+                new string[] { "@CountryOfOrigin", ((int)teamDTO.Country).ToString()},
+                new string[] { "@SpokenLanguage", ((int)teamDTO.Language).ToString()},
+                new string[] { "@MinimumAge", teamDTO.MinimumAge.ToString()},
+                new string[] { "@PlayedGame", ((int)teamDTO.PlayedGame).ToString()},
+            };
+            var result = SQLConnection.ExecuteNonSearchQueryParameters($"INSERT INTO Teams (TeamID,TeamName,MinimumElo,IsPrivate,Description,CountryOfOrigin,SpokenLanguage,MinimumAge,PlayedGame) VALUES (@TeamID, @TeamName,@MinimumElo,@IsPrivate,@Description,@CountryOfOrigin,@SpokenLanguage,@MinimumAge,@PlayedGame);", param);
             return result;
         }
 
         public bool EditTeam(TeamDTO teamDTO)
         {
-            return SQLConnection.ExecuteNonSearchQuery($"UPDATE Teams SET `TeamName` = '{teamDTO.TeamName}', `MinimumElo` = '{teamDTO.MinimumElo}', `IsPrivate` = '{teamDTO.IsPrivate}', `Description` = '{teamDTO.Description}', `CountryOfOrigin` = '{(int)teamDTO.Country}', `SpokenLanguage` = '{(int)teamDTO.Language}', `MinimumAge` = '{teamDTO.MinimumAge}', `PlayedGame` = '{(int)teamDTO.PlayedGame}' ");
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] { "@TeamName", teamDTO.TeamName},
+                new string[] { "@MinimumElo", teamDTO.MinimumElo.ToString()},
+                new string[] { "@IsPrivate", (Convert.ToInt32(teamDTO.IsPrivate)).ToString()},
+                new string[] { "@Description", teamDTO.Description},
+                new string[] { "@CountryOfOrigin", ((int)teamDTO.Country).ToString()},
+                new string[] { "@SpokenLanguage", ((int)teamDTO.Language).ToString()},
+                new string[] { "@MinimumAge", teamDTO.MinimumAge.ToString()},
+                new string[] { "@PlayedGame", ((int)teamDTO.PlayedGame).ToString()},
+            };
+            return SQLConnection.ExecuteNonSearchQueryParameters($"UPDATE Teams SET `TeamName` = @TeamName, `MinimumElo` = @MinimumElo, `IsPrivate` = @IsPrivate, `Description` = @Description, `CountryOfOrigin` = @CountryOfOrigin, `SpokenLanguage` = @SpokenLanguage, `MinimumAge` = @MinimumAge, `PlayedGame` = @PlayedGame", param);
         }
 
         public TeamDTO FindTeamByName(string Name)
         {
-            var result = SQLConnection.ExecuteSearchQuery($"SELECT * FROM Teams WHERE `TeamName` = '{Name}'");
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] { "@TeamName", Name},
+            };
+            var result = SQLConnection.ExecuteSearchQueryParameters($"SELECT * FROM Teams WHERE `TeamName` = @TeamName",param);
             if (result.Count == 0)
             {
                 return null;
@@ -30,8 +57,40 @@ namespace DAL
 
         public TeamDTO FindTeamByID(string ID)
         {
-            var result = SQLConnection.ExecuteSearchQuery($"SELECT * FROM Teams Where TeamID = '{ID}'");
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] { "@TeamID", ID},
+            };
+            var result = SQLConnection.ExecuteSearchQueryParameters($"SELECT * FROM Teams Where TeamID = @TeamID", param);
             return GenerateDTOFromRow(result[0]);
+        }
+        public List<TeamDTO> FindAllTeams()
+        {
+            var result = SQLConnection.ExecuteSearchQuery($"SELECT * FROM Teams");
+            return GenerateDTOsFromRows(result);
+        }
+        public TeamDTO FindTeamByUser(string userID)
+        {
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] { "@UserID", userID},
+            };
+            var TeamID = SQLConnection.ExecuteSearchQueryParameters("SELECT TeamID FROM UserTeams Where UserID = @UserID", param);
+            param = new List<string[]>()
+            {
+                new string[] { "@TeamID", TeamID[0][0]},
+            };
+            var Team = SQLConnection.ExecuteSearchQueryParameters("SELECT * FROM Teams Where TeamID = @TeamID", param);
+            return GenerateDTOFromRow(Team[0]);
+        }
+        public int GetUserTeamRole(string UserID)
+        {
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] { "@UserID", UserID},
+            };
+            var Role = SQLConnection.ExecuteSearchQueryParameters("SELECT Role FROM UserTeams Where UserID = @UserID", param);
+            return Convert.ToInt32(Role[0][0]);
         }
 
         private TeamDTO GenerateDTOFromRow(string[] row)
@@ -76,7 +135,14 @@ namespace DAL
 
         public bool AddPlayerToTeam(string PlayerID, string TeamID, int Role)
         {
-            throw new NotImplementedException();
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] { "@PlayerID", PlayerID},
+                new string[] { "@TeamID", TeamID},
+                new string[] { "@Role", Role.ToString()},
+            };
+            var result = SQLConnection.ExecuteNonSearchQueryParameters($"INSERT INTO UserTeams (UserID,TeamID,Role) VALUES (@PlayerID,@TeamID,@Role)", param);
+            return result;
         }
     }
 }
