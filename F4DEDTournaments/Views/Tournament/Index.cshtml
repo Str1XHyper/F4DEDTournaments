@@ -9,25 +9,33 @@
                 Future tournaments
             </div>
             <div class="card-body" style="height:100%">
-                @foreach (var tournament in Model.Tournaments)
+                @if (Model.Tournaments.Count > 0)
                 {
-                <div>
-                    @{
-                        string tournamentString = "";
-                        if (tournament.BuyIn == 0)
-                        {
-                            tournamentString = $"{tournament.Name}, Prize: ${tournament.Prize}, Buy in: Free";
-                            <a class="btn btn-primary text-white">Enter Tournament</a>
-                        }
-                        else
-                        {
-                            tournamentString = $"{tournament.Name}, Prize: ${tournament.Prize}, Buy in: {tournament.BuyIn}";
+                    foreach (var tournament in Model.Tournaments)
+                    {
+                        <div class="pb-2">
+                            @{
+                                string tournamentString = "";
+                                if (tournament.BuyIn == 0)
+                                {
+                                    tournamentString = $"{tournament.Name}, Prize: ${tournament.Prize}, Buy in: Free";
+                                    <a class="btn btn-primary text-white">Enter Tournament</a>
+                                }
+                                else
+                                {
+                                    tournamentString = $"{tournament.Name}, Prize: ${tournament.Prize}, Buy in: {tournament.BuyIn}";
 
-                            <a class="btn btn-primary text-white">Buy in</a>
-                        }
-                        @tournamentString
+                                    <a class="btn btn-primary text-white">Buy in</a>
+                                }
+                                @tournamentString
+                            }
+                        </div>
                     }
-                </div>
+                }
+                else
+                {
+                    <div>There are planned tournaments</div>
+                    <a class="btn btn-primary text-white">Create a Tournament</a>
                 }
             </div>
         </div>

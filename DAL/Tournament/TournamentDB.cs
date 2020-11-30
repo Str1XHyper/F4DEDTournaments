@@ -18,6 +18,7 @@ namespace DAL.Tournament
                 new string[] {"@Prize", tournamentDTO.Prize.ToString()},
                 new string[] {"@BuyIn", tournamentDTO.BuyIn.ToString()},
                 new string[] {"@Game", ((int)tournamentDTO.Game).ToString()},
+                new string[] {"@DateTime", tournamentDTO.StartTime.ToString()},
             };
             return SQLConnection.ExecuteNonSearchQueryParameters($"INSERT INTO Tournament (ID,Name,OrganisationID,Size,Prize,BuyIn,Game) VALUES (@ID, @Name,@OrganisationID,@Size,@Prize,@BuyIn,@Game);", param);
         }
@@ -64,6 +65,11 @@ namespace DAL.Tournament
             var result = SQLConnection.ExecuteSearchQuery($"SELECT * FROM Tournament");
             return GenerateDTOsFromRows(result);
         }
+        public List<TournamentDTO> FindAllFutureTournaments()
+        {
+            var result = SQLConnection.ExecuteSearchQuery($"SELECT * FROM Tournament WHERE StartTime >= NOW() ORDER BY StartTime ASC;");
+            return GenerateDTOsFromRows(result);
+        }
 
         public bool AddUserToLadder(string UserID, string LadderID)
         {
@@ -73,6 +79,16 @@ namespace DAL.Tournament
                 new string[] {"@LadderID", LadderID},
             };
             return SQLConnection.ExecuteNonSearchQueryParameters("INSERT INTO UserLadder (UserID,LadderID) VALUES (@UserID,@LadderID)", param);
+        }
+
+        public List<TournamentDTO> GetCompatibleTournaments(int Elo)
+        {
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] {"@Elo", Elo.ToString()},
+            };
+            var result = SQLConnection.ExecuteSearchQueryParameters("SELECT * FROM Tournament WHERE MinimumElo < @Elo, MaximumElo > @Elo", param);
+            return GenerateDTOsFromRows(result);
         }
 
         private TournamentDTO GenerateDTOFromRow(string[] row)

@@ -25,5 +25,6 @@ namespace F4DEDTournaments.Models
         public string LastName { get; set; }
         [Required]
         public int Elo { get; set; }
+        public int Currency { get; set; }
     }
 }

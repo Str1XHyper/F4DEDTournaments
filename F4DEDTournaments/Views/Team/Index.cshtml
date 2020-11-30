@@ -13,18 +13,30 @@
                 @team.TeamName
             </div>
             <div class="card-body">
-                @team.Description
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            Description: @team.Description
+                        </div>
+                        <div class="col">
+                            Minimum Elo: @team.MinimumElo
+                        </div>
+                        <div class="col">
+                            Minimum Age: @team.MinimumAge
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="card-footer">
                 @if (team.IsPrivate)
                 {
-                    <a class="btn btn-primary">
+                    <a class="btn btn-danger text-white">
                         Send invite
                     </a>
                 }
                 else
                 {
-                    <a class="btn btn-primary">
+                    <a class="btn btn-primary text-white">
                         Join
                     </a>
                 }

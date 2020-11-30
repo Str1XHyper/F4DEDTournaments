@@ -29,7 +29,7 @@ namespace Logic.Tournament
 
         public List<TournamentDTO> Get10NextTournaments()
         {
-            var tournaments = tournamentDB.FindAllTournaments();
+            var tournaments = tournamentDB.FindAllFutureTournaments();
             if (tournaments.Count <= 10)
             {
                 return tournaments;

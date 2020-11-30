@@ -13,5 +13,6 @@ namespace Model
         public int Prize { get; set; }
         public int BuyIn { get; set; }
         public Games Game { get; set; }
+        public DateTime StartTime { get; set; }
     }
 }

@@ -50,6 +50,15 @@ namespace DAL.Ladder
             return GenerateDTOsFromRows(result);
         }
 
+        public List<LadderDTO> GetCompatibleLadder(int Elo)
+        {
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] {"@Elo", Elo.ToString()},
+            };
+            var result = SQLConnection.ExecuteSearchQueryParameters("SELECT * FROM Ladder WHERE MinimumElo < @Elo, MaximumElo > @Elo", param);
+            return GenerateDTOsFromRows(result);
+        }
         private LadderDTO GenerateDTOFromRow(string[] row)
         {
 
