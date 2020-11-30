@@ -26,6 +26,7 @@ namespace DAL.Tournament
         {
             List<string[]> param = new List<string[]>()
             {
+                new string[] {"@ID", tournamentDTO.ID},
                 new string[] {"@Name", tournamentDTO.Name},
                 new string[] {"@OrganisationID", tournamentDTO.OrganisationID},
                 new string[] {"@Size", tournamentDTO.Size.ToString()},
@@ -33,7 +34,7 @@ namespace DAL.Tournament
                 new string[] {"@BuyIn", tournamentDTO.BuyIn.ToString()},
                 new string[] {"@Game", ((int)tournamentDTO.Game).ToString()},
             };
-            return SQLConnection.ExecuteNonSearchQueryParameters($"UPDATE Teams SET `Name` = @Name, `OrganisationID` = @OrganisationID, `Size` = @Size, `Prize` = @Prize, `BuyIn` = @BuyIn, `Game` = @Game",param);
+            return SQLConnection.ExecuteNonSearchQueryParameters($"UPDATE Tournament SET `Name` = @Name, `OrganisationID` = @OrganisationID, `Size` = @Size, `Prize` = @Prize, `BuyIn` = @BuyIn, `Game` = @Game WHERE ID= @ID",param);
         }
         public TournamentDTO FindTournamentByName(string Name)
         {
@@ -62,6 +63,16 @@ namespace DAL.Tournament
         {
             var result = SQLConnection.ExecuteSearchQuery($"SELECT * FROM Tournament");
             return GenerateDTOsFromRows(result);
+        }
+
+        public bool AddUserToLadder(string UserID, string LadderID)
+        {
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] {"@UserID", UserID},
+                new string[] {"@LadderID", LadderID},
+            };
+            return SQLConnection.ExecuteNonSearchQueryParameters("INSERT INTO UserLadder (UserID,LadderID) VALUES (@UserID,@LadderID)", param);
         }
 
         private TournamentDTO GenerateDTOFromRow(string[] row)

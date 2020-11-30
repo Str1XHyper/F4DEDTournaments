@@ -29,6 +29,7 @@ namespace DAL
         {
             List<string[]> param = new List<string[]>()
             {
+                new string[] { "@TeamID", teamDTO.TeamID},
                 new string[] { "@TeamName", teamDTO.TeamName},
                 new string[] { "@MinimumElo", teamDTO.MinimumElo.ToString()},
                 new string[] { "@IsPrivate", (Convert.ToInt32(teamDTO.IsPrivate)).ToString()},
@@ -38,7 +39,7 @@ namespace DAL
                 new string[] { "@MinimumAge", teamDTO.MinimumAge.ToString()},
                 new string[] { "@PlayedGame", ((int)teamDTO.PlayedGame).ToString()},
             };
-            return SQLConnection.ExecuteNonSearchQueryParameters($"UPDATE Teams SET `TeamName` = @TeamName, `MinimumElo` = @MinimumElo, `IsPrivate` = @IsPrivate, `Description` = @Description, `CountryOfOrigin` = @CountryOfOrigin, `SpokenLanguage` = @SpokenLanguage, `MinimumAge` = @MinimumAge, `PlayedGame` = @PlayedGame", param);
+            return SQLConnection.ExecuteNonSearchQueryParameters($"UPDATE Teams SET `TeamName` = @TeamName, `MinimumElo` = @MinimumElo, `IsPrivate` = @IsPrivate, `Description` = @Description, `CountryOfOrigin` = @CountryOfOrigin, `SpokenLanguage` = @SpokenLanguage, `MinimumAge` = @MinimumAge, `PlayedGame` = @PlayedGame WHERE TeamID = @TeamID", param);
         }
 
         public TeamDTO FindTeamByName(string Name)
