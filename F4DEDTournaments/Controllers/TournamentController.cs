@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Mvc;
 using F4DEDTournaments.Models.Tournament;
 using Model;
 using Logic.Tournament;
+using Logic.Organisation;
 
 namespace F4DEDTournaments.Controllers
 {
     public class TournamentController : Controller
     {
         TournamentManager tournamentManager = new TournamentManager();
+        OrganisationManager organisationManager = new OrganisationManager();
         //[HttpGet]
         //public IActionResult CreateTournament()
         //{
@@ -25,25 +27,15 @@ namespace F4DEDTournaments.Controllers
         [HttpGet]
         public IActionResult CreateTournament(string OrganisationID)
         {
-            if(OrganisationID == null)
+            ViewData["Creator"] = OrganisationID == null ? "User" : "Org";
+            CreateTournamentViewModel model = new CreateTournamentViewModel()
             {
-                ViewData["Creator"] = "User";
-                CreateTournamentViewModel model = new CreateTournamentViewModel()
-                {
-                    OrganisationID = "null",
-                };
-                return View(model);
-            } else
-            {
-                ViewData["Creator"] = "Org";
-                CreateTournamentViewModel model = new CreateTournamentViewModel()
-                {
-                    OrganisationID = OrganisationID,
-                };
-                return View(model);
-            }
-
+                OrganisationID = OrganisationID == null ? "null" : OrganisationID
+            };
+            ViewData["OrgName"] = OrganisationID == null ? null : organisationManager.GetOrganisationByID(OrganisationID).Name;
+            return View(model);
         }
+
         [HttpPost]
         public IActionResult CreateTournament(CreateTournamentViewModel model)
         {
@@ -54,7 +46,8 @@ namespace F4DEDTournaments.Controllers
                 Size = model.Size,
                 Prize = model.Prize,
                 BuyIn = model.BuyIn,
-                Game = model.Game
+                Game = model.Game,
+                StartTime = model.StartTime
             };
             tournamentManager.CreateTeam(tournamentDTO);
             return RedirectToAction("Index");

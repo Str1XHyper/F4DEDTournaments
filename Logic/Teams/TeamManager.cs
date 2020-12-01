@@ -9,6 +9,7 @@ namespace Logic
 {
     public enum TeamErrorCodes
     {
+        UnknownException = -1,
         NoError = 0,
         NameAlreadyExists = 1,
     }
@@ -30,10 +31,7 @@ namespace Logic
             return TeamErrorCodes.NoError;
         }
 
-        public TeamDTO GetTeamByID(string ID)
-        {
-            return teamManagerDB.FindTeamByID(ID);
-        }
+        public TeamDTO GetTeamByID(string ID) => teamManagerDB.FindTeamByID(ID);
 
         public UserTeamDTO GetUserTeam(string UserID)
         {

@@ -114,10 +114,10 @@ namespace DAL
 
         private List<TeamDTO> GenerateDTOsFromRows(List<string[]> rows)
         {
-            List<TeamDTO> teamDTOs = new List<TeamDTO>();
+            List<TeamDTO> teamList = new List<TeamDTO>();
             foreach (string[] row in rows)
             {
-                teamDTOs.Add(new TeamDTO()
+                teamList.Add(new TeamDTO()
                 {
                     TeamID = row[0],
                     TeamName = row[1],
@@ -131,7 +131,7 @@ namespace DAL
                 });
             }
 
-            return teamDTOs;
+            return teamList;
         }
 
         public bool AddPlayerToTeam(string PlayerID, string TeamID, int Role)

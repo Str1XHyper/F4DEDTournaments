@@ -21,5 +21,7 @@ namespace F4DEDTournaments.Models.Tournament
         public int BuyIn { get; set; }
         [Required]
         public Games Game { get; set; }
+        [Required]
+        public DateTime StartTime { get; set; }
     }
 }

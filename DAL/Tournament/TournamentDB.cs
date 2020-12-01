@@ -18,9 +18,9 @@ namespace DAL.Tournament
                 new string[] {"@Prize", tournamentDTO.Prize.ToString()},
                 new string[] {"@BuyIn", tournamentDTO.BuyIn.ToString()},
                 new string[] {"@Game", ((int)tournamentDTO.Game).ToString()},
-                new string[] {"@DateTime", tournamentDTO.StartTime.ToString()},
+                new string[] {"@DateTime", tournamentDTO.StartTime.ToString("yyyy-MM-dd hh:mm:ss") },
             };
-            return SQLConnection.ExecuteNonSearchQueryParameters($"INSERT INTO Tournament (ID,Name,OrganisationID,Size,Prize,BuyIn,Game) VALUES (@ID, @Name,@OrganisationID,@Size,@Prize,@BuyIn,@Game);", param);
+            return SQLConnection.ExecuteNonSearchQueryParameters($"INSERT INTO Tournament (ID,Name,OrganisationID,Size,Prize,BuyIn,Game,StartTime) VALUES (@ID, @Name,@OrganisationID,@Size,@Prize,@BuyIn,@Game,@DateTime);", param);
         }
         
         public bool EditTournament(TournamentDTO tournamentDTO)
@@ -33,7 +33,7 @@ namespace DAL.Tournament
                 new string[] {"@Size", tournamentDTO.Size.ToString()},
                 new string[] {"@Prize", tournamentDTO.Prize.ToString()},
                 new string[] {"@BuyIn", tournamentDTO.BuyIn.ToString()},
-                new string[] {"@Game", ((int)tournamentDTO.Game).ToString()},
+                new string[] {"@Game", ((int)tournamentDTO.Game).ToString("YYYY-MM-DD hh:mm:ss") },
             };
             return SQLConnection.ExecuteNonSearchQueryParameters($"UPDATE Tournament SET `Name` = @Name, `OrganisationID` = @OrganisationID, `Size` = @Size, `Prize` = @Prize, `BuyIn` = @BuyIn, `Game` = @Game WHERE ID= @ID",param);
         }
@@ -109,10 +109,10 @@ namespace DAL.Tournament
 
         private List<TournamentDTO> GenerateDTOsFromRows(List<string[]> rows)
         {
-            List<TournamentDTO> tournamentDTO = new List<TournamentDTO>();
+            List<TournamentDTO> tournamentList = new List<TournamentDTO>();
             foreach (string[] row in rows)
             {
-                tournamentDTO.Add(new TournamentDTO()
+                tournamentList.Add(new TournamentDTO()
                 {
                     ID = row[0],
                     Name = row[1],
@@ -123,7 +123,7 @@ namespace DAL.Tournament
                     Game = (Games)Convert.ToInt32(row[6])
                 });
             }
-            return tournamentDTO;
+            return tournamentList;
         }
     }
 }

@@ -1,0 +1,38 @@
+﻿@model F4DEDTournaments.Models.Ladder.CreateLadderViewModel
+
+@{
+    ViewData["Title"] = "CreateLadder";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateLadder">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Game" class="control-label"></label>
+                <input asp-for="Game" class="form-control" />
+                <span asp-validation-for="Game" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinimumElo" class="control-label"></label>
+                <input asp-for="MinimumElo" class="form-control" />
+                <span asp-validation-for="MinimumElo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaximumElo" class="control-label"></label>
+                <input asp-for="MaximumElo" class="form-control" />
+                <span asp-validation-for="MaximumElo" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

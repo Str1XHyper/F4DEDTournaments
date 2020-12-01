@@ -46,15 +46,15 @@ namespace F4DEDTournaments.Controllers
             switch (result)
             {
                 case TeamErrorCodes.NoError:
-                    return View();
+                    return RedirectToAction("ViewTeam");
                 case TeamErrorCodes.NameAlreadyExists:
                     ModelState.AddModelError("TeamName","This name already exists!");
                     return View();
+                case TeamErrorCodes.UnknownException:
+                    return RedirectToAction("Error", "Home", new { errorMessage = "An Unknown error occured while creating a team", errorDate = DateTime.Now });
             }
 
             return View();
-
-            //Return to team view;
         }
 
 

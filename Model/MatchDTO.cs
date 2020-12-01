@@ -9,7 +9,8 @@ namespace Model
         public string ID { get; set; }
         public string Name { get; set; }
         public Games Game { get; set; }
-        public DateTime PlayedDate { get; set; }
-        public int TeamWon { get; set; }
+        public DateTime PlayDate { get; set; }
+        public int ScoreTeam1 { get; set; }
+        public int ScoreTeam2 { get; set; }
     }
 }

@@ -75,10 +75,10 @@ namespace DAL.Ladder
 
         private List<LadderDTO> GenerateDTOsFromRows(List<string[]> rows)
         {
-            List<LadderDTO> ladderDTO = new List<LadderDTO>();
+            List<LadderDTO> ladderList = new List<LadderDTO>();
             foreach (string[] row in rows)
             {
-                ladderDTO.Add(new LadderDTO()
+                ladderList.Add(new LadderDTO()
                 {
                     ID = row[0],
                     Name = row[1],
@@ -87,7 +87,7 @@ namespace DAL.Ladder
                     Game = (Games)Convert.ToInt32(row[4])
                 });
             }
-            return ladderDTO;
+            return ladderList;
         }
     }
 }
