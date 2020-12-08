@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DAL;
+using Interface;
 using Model;
 
 namespace Logic.Teams
 {
     public class Team
     {
+        ITeamDB teamDB = new TeamDB();
+        EmailManager emailManager = new EmailManager();
+
         public string TeamID { get; set; }
         public string TeamName { get; set; }
         public int MinimumElo { get; set; }
@@ -28,6 +33,38 @@ namespace Logic.Teams
             Country = teamDTO.Country;
             Language = teamDTO.Language;
             PlayedGame = teamDTO.PlayedGame;
+        }
+
+        private bool UpdateTeam()
+        {
+            TeamDTO teamDTO = new TeamDTO()
+            {
+                TeamID = this.TeamID,
+                TeamName = this.TeamName,
+                MinimumAge = this.MinimumAge,
+                MinimumElo = this.MinimumElo,
+                IsPrivate = this.IsPrivate,
+                Description = this.Description,
+                Country = this.Country,
+                Language = this.Language,
+                PlayedGame = this.PlayedGame
+            };
+            return teamDB.EditTeam(teamDTO);
+        }
+
+        public bool AddPlayer(string UserId,TeamRoles role)
+        {
+            return teamDB.AddPlayerToTeam(UserId, this.TeamID, (int)role);
+        }
+
+        public void RecieveInvite()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SendInvite()
+        {
+            emailManager.SendInvite("tijnvanveghel@gmail.com", "Tijn van Veghel", "F4DED");
         }
     }
 }

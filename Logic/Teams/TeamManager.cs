@@ -5,7 +5,7 @@ using System.Text;
 using IdGenerator;
 using DAL;
 
-namespace Logic
+namespace Logic.Teams
 {
     public enum TeamErrorCodes
     {
@@ -16,7 +16,19 @@ namespace Logic
 
     public class TeamManager
     {
-        ITeamCollectionDB teamManagerDB = new TeamManagerDB();
+        ITeamCollectionDB teamManagerDB = new TeamDB();
+        List<Team> teams = new List<Team>();
+
+        public TeamManager()
+        {
+            var AllTeamDTOs = teamManagerDB.FindAllTeams();
+            foreach (TeamDTO teamDTO in AllTeamDTOs)
+            {
+                var team = new Team(teamDTO);
+                teams.Add(team);
+            }
+        }
+
         Generator idGenerator = new Generator();
         public TeamErrorCodes CreateTeam(TeamDTO teamDTO,string UserID)
         {
@@ -27,11 +39,16 @@ namespace Logic
             }
             teamDTO.TeamID = idGenerator.GenerateID(12);
             teamManagerDB.CreateTeam(teamDTO);
-            teamManagerDB.AddPlayerToTeam(UserID, teamDTO.TeamID, (int) TeamRoles.Owner);
+            Team team = new Team(teamDTO);
+            teams.Add(team);
+            team.AddPlayer(UserID, TeamRoles.Owner);
             return TeamErrorCodes.NoError;
         }
-
-        public TeamDTO GetTeamByID(string ID) => teamManagerDB.FindTeamByID(ID);
+        public Team GetTeamByID(string ID)
+        {
+            var team = teams.Find(x => x.TeamID == ID);
+            return team;
+        }
 
         public UserTeamDTO GetUserTeam(string UserID)
         {
@@ -53,15 +70,15 @@ namespace Logic
             return userTeamDTO;
         }
 
-        public List<TeamDTO> GetTop10Teams()
+        public List<Team> GetTop10Teams()
         {
-            var teams = teamManagerDB.FindAllTeams();
             if(teams.Count <= 10)
             {
                 return teams;
             }
-            teams.RemoveRange(10, teams.Count);
-            return teams;
+            List<Team> top10 = teams;
+            top10.RemoveRange(10, teams.Count);
+            return top10;
         }
     }
 }
