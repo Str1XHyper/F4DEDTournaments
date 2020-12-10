@@ -13,7 +13,7 @@ namespace Logic
 
         public bool SendInvite(string RecipientMail, string RecipientName, string TeamName)
         {
-            var client = new SendGridClient("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");
+            var client = new SendGridClient(Hidden.SendgridApiKey);
             SendGridMessage message = new SendGridMessage();
             message.SetFrom(new EmailAddress("NoReply@Str1XHyper.nl", "F4DED Tournaments"));
             message.AddTo(new EmailAddress(RecipientMail, RecipientName));
