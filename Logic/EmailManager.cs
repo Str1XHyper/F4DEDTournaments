@@ -9,8 +9,6 @@ namespace Logic
 {
     public class EmailManager
     {
-        // API Key: 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
-
         public bool SendInvite(string RecipientMail, string RecipientName, string TeamName)
         {
             var client = new SendGridClient(Hidden.SendgridApiKey);
