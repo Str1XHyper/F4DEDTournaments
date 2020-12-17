@@ -15,7 +15,7 @@ namespace Logic
             SendGridMessage message = new SendGridMessage();
             message.SetFrom(new EmailAddress("NoReply@Str1XHyper.nl", "F4DED Tournaments"));
             message.AddTo(new EmailAddress(RecipientMail, RecipientName));
-            message.SetTemplateId("d-e5045eae728b4c7c954753a0e2a135dc");
+            message.SetTemplateId("d-9bdeb16093254f16a0fc75eaf99d0dee");
             message.SetTemplateData(new SendInviteMailData()
             {
                 RecipientName = RecipientName,
@@ -40,7 +40,7 @@ namespace Logic
             SendGridMessage message = new SendGridMessage();
             message.SetFrom(new EmailAddress("NoReply@Str1XHyper.nl", "F4DED Tournaments"));
             message.AddTo(new EmailAddress(RecipientMail, RecipientName));
-            message.SetTemplateId("d-e5045eae728b4c7c954753a0e2a135dc");
+            message.SetTemplateId("d-63bed604fd7a42118cca658cfb34d426");
             message.SetTemplateData(new ReceiveInviteMailData()
             {
                 RecipientName = RecipientName,
