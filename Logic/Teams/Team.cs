@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using DAL;
+using Interface;
 using Model;
 
 namespace Logic.Teams
 {
     public class Team
     {
+        ITeamDB teamDB = new TeamDB();
+        EmailManager emailManager = new EmailManager();
+
         public string TeamID { get; set; }
         public string TeamName { get; set; }
         public int MinimumElo { get; set; }
@@ -29,7 +34,6 @@ namespace Logic.Teams
             Language = teamDTO.Language;
             PlayedGame = teamDTO.PlayedGame;
         }
-<<<<<<< HEAD
 
         public Team()
         {
@@ -70,7 +74,5 @@ namespace Logic.Teams
         {
             emailManager.SendInvite("tijnvanveghel@gmail.com", "Tijn van Veghel", "F4DED");
         }
-=======
->>>>>>> parent of daca28f... Added Mailing System and interface segregation
     }
 }
