@@ -14,16 +14,6 @@ namespace F4DEDTournaments.Controllers
     {
         TournamentManager tournamentManager = new TournamentManager();
         OrganisationManager organisationManager = new OrganisationManager();
-        //[HttpGet]
-        //public IActionResult CreateTournament()
-        //{
-        //    ViewData["Creator"] = "User";
-        //    TournamentDTO tournamentDTO = new TournamentDTO()
-        //    {
-        //        OrganisationID = "null",
-        //    };
-        //    return View(tournamentDTO);
-        //}
         [HttpGet]
         public IActionResult CreateTournament(string OrganisationID)
         {

@@ -18,6 +18,7 @@ namespace Logic.Teams
     {
         ITeamCollectionDB teamManagerDB = new TeamDB();
         List<Team> teams = new List<Team>();
+        Generator idGenerator = new Generator();
 
         public TeamManager()
         {
@@ -29,7 +30,6 @@ namespace Logic.Teams
             }
         }
 
-        Generator idGenerator = new Generator();
         public TeamErrorCodes CreateTeam(TeamDTO teamDTO,string UserID)
         {
             var result = teamManagerDB.FindTeamByName(teamDTO.TeamName);
@@ -52,22 +52,22 @@ namespace Logic.Teams
 
         public UserTeamDTO GetUserTeam(string UserID)
         {
-            var Team = teamManagerDB.FindTeamByUser(UserID);
+            var TeamDTO = teamManagerDB.FindTeamByUser(UserID);
+            var team = teams.Find(x => x.TeamID == TeamDTO.TeamID);
             var role = teamManagerDB.GetUserTeamRole(UserID);
             UserTeamDTO userTeamDTO = new UserTeamDTO()
             {
-                TeamID = Team.TeamID,
-                TeamName = Team.TeamName,
-                MinimumAge = Team.MinimumAge,
-                MinimumElo = Team.MinimumElo,
-                Country = Team.Country,
-                Language = Team.Language,
-                Description = Team.Description,
-                IsPrivate = Team.IsPrivate,
-                PlayedGame = Team.PlayedGame,
+                Team = team,
+                Role = (TeamRoles)role
             };
-            userTeamDTO.Role = (TeamRoles)role;
             return userTeamDTO;
+        }
+
+        public Team GetTeamByUser(string UserID)
+        {
+            var TeamDTO = teamManagerDB.FindTeamByUser(UserID);
+            var team = teams.Find(x => x.TeamID == TeamDTO.TeamID);
+            return team;
         }
 
         public List<Team> GetTop10Teams()

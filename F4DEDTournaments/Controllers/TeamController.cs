@@ -61,22 +61,15 @@ namespace F4DEDTournaments.Controllers
         public async Task<IActionResult> ViewTeam()
         {
             var currentUser = await userManager.GetUserAsync(User);
-            var team = teamManager.GetUserTeam(currentUser.Id);
-
-
+            var userTeamDTO = teamManager.GetUserTeam(currentUser.Id);
+            var members = ((Team)userTeamDTO.Team).GetMembers();
             TeamViewModel model = new TeamViewModel()
             {
-                TeamID = team.TeamID,
-                TeamName = team.TeamName,
-                MinimumAge = team.MinimumAge,
-                MinimumElo = team.MinimumElo,
-                Country = team.Country,
-                Language = team.Language,
-                Description = team.Description,
-                IsPrivate = team.IsPrivate,
-                PlayedGame = team.PlayedGame,
-                Role = team.Role
+                Team = (Team)userTeamDTO.Team,
+                Role = userTeamDTO.Role,
+                Members = members
             };
+
             return View(model);
         }
 
@@ -88,6 +81,30 @@ namespace F4DEDTournaments.Controllers
                 Teams = teams
             };
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditTeam(string TeamID)
+        {
+            Team team;
+            if(TeamID == null)
+            {
+                var currentUser = await userManager.GetUserAsync(User);
+                team = teamManager.GetTeamByUser(currentUser.Id);
+            } else
+            {
+                team = teamManager.GetTeamByID(TeamID);
+            }
+
+            return View(team);
+        }
+
+
+        [HttpPost]
+        public IActionResult EditTeam(Team model)
+        {
+            model.UpdateTeam();
+            return RedirectToAction("ViewTeam");
         }
     }
 }

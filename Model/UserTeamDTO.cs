@@ -12,8 +12,9 @@ namespace Model
     }
 
 
-    public class UserTeamDTO: TeamDTO
+    public class UserTeamDTO
     {
+        public object Team { get; set; }
         public TeamRoles Role { get; set; }
     }
 }

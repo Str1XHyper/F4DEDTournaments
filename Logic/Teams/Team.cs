@@ -35,7 +35,12 @@ namespace Logic.Teams
             PlayedGame = teamDTO.PlayedGame;
         }
 
-        private bool UpdateTeam()
+        public Team()
+        {
+
+        }
+
+        public bool UpdateTeam()
         {
             TeamDTO teamDTO = new TeamDTO()
             {
@@ -56,6 +61,9 @@ namespace Logic.Teams
         {
             return teamDB.AddPlayerToTeam(UserId, this.TeamID, (int)role);
         }
+
+        public List<string> GetMembers() => teamDB.GetMembers(TeamID);
+        
 
         public void RecieveInvite()
         {

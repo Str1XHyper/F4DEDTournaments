@@ -9,23 +9,8 @@ namespace F4DEDTournaments.Models
 {
     public class TeamViewModel
     {
-        public string TeamID { get; set; }
-        [Required]
-        public string TeamName { get; set; }
-        [Required]
-        public int MinimumElo { get; set; }
-        [Required]
-        public bool IsPrivate { get; set; }
-        public string Description { get; set; }
-        [Required]
-        public Countries Country { get; set; }
-        [Required]
-        public Languages Language { get; set; }
-        [Required]
-        public int MinimumAge { get; set; }
-        [Required]
-        public Games PlayedGame { get; set; }
+        public Logic.Teams.Team Team { get; set; }
         public TeamRoles Role { get; set; }
-
+        public List<string> Members { get; set; }
     }
 }

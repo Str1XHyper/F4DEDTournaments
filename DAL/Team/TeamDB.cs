@@ -79,6 +79,10 @@ namespace DAL
                 new string[] { "@UserID", userID},
             };
             var TeamID = SQLConnection.ExecuteSearchQueryParameters("SELECT TeamID FROM UserTeams Where UserID = @UserID", param);
+            if(TeamID == null)
+            {
+                return null;
+            }
             param = new List<string[]>()
             {
                 new string[] { "@TeamID", TeamID[0][0]},
@@ -146,6 +150,32 @@ namespace DAL
             };
             var result = SQLConnection.ExecuteNonSearchQueryParameters($"INSERT INTO UserTeams (UserID,TeamID,Role) VALUES (@PlayerID,@TeamID,@Role)", param);
             return result;
+        }
+
+        public List<string> GetMembers(string teamID)
+        {
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] { "@TeamID", teamID},
+            };
+            List<string[]> UserRoles = SQLConnection.ExecuteSearchQueryParameters("SELECT UserID,Role FROM UserTeams Where TeamID = @TeamID", param);
+
+            param = new List<string[]>();
+            string query = "SELECT UserName FROM AspNetUsers WHERE Id in (";
+            for (int i = 0; i < UserRoles.Count; i++)
+            {
+                param.Add(new string[] { $"@UserID{i}", UserRoles[i][0]});
+                query += $"@UserID{i},";
+            }
+            query = query.Remove(query.Length-1, 1);
+            query += ")";
+            var result = SQLConnection.ExecuteSearchQueryParameters(query, param);
+            List<string> returnResult = new List<string>();
+            foreach(string[] row in result)
+            {
+                returnResult.Add(row[0]);
+            }
+            return returnResult;
         }
     }
 }

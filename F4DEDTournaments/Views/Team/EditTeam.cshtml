@@ -1,3 +1,62 @@
-﻿@{
+﻿@model Logic.Teams.Team
 
+@{
+    ViewData["Title"] = "EditTeam";
 }
+
+<h1>EditTeam</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditTeam">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="TeamID" hidden class="form-control" />
+            </div>
+            <div class="form-group">
+                <label asp-for="TeamName" class="control-label"></label>
+                <input asp-for="TeamName" class="form-control" />
+                <span asp-validation-for="TeamName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinimumElo" class="control-label"></label>
+                <input asp-for="MinimumElo" class="form-control" />
+                <span asp-validation-for="MinimumElo" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="IsPrivate" /> @Html.DisplayNameFor(model => model.IsPrivate)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Country" class="control-label"></label>
+                <input asp-for="Country" class="form-control" />
+                <span asp-validation-for="Country" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Language" class="control-label"></label>
+                <input asp-for="Language" class="form-control" />
+                <span asp-validation-for="Language" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MinimumAge" class="control-label"></label>
+                <input asp-for="MinimumAge" class="form-control" />
+                <span asp-validation-for="MinimumAge" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PlayedGame" class="control-label"></label>
+                <input asp-for="PlayedGame" class="form-control" />
+                <span asp-validation-for="PlayedGame" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
