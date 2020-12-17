@@ -7,11 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F4DEDTournaments", "F4DEDTo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Model", "Model\Model.csproj", "{6D5E358A-AFE4-4A66-AF04-4C5F378D3EF0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{32B342DC-C49B-406C-A05D-2B04910BB2CA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logic", "Logic\Logic.csproj", "{32B342DC-C49B-406C-A05D-2B04910BB2CA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{5DE83C69-3E9C-4231-8807-A38E0DC4DB0F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Interface", "Interface\Interface.csproj", "{34C1BDA4-48D4-461C-BF84-0E902ED98EB4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "DAL\DAL.csproj", "{5DE83C69-3E9C-4231-8807-A38E0DC4DB0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +33,6 @@ Global
 		{5DE83C69-3E9C-4231-8807-A38E0DC4DB0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DE83C69-3E9C-4231-8807-A38E0DC4DB0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DE83C69-3E9C-4231-8807-A38E0DC4DB0F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{34C1BDA4-48D4-461C-BF84-0E902ED98EB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{34C1BDA4-48D4-461C-BF84-0E902ED98EB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{34C1BDA4-48D4-461C-BF84-0E902ED98EB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{34C1BDA4-48D4-461C-BF84-0E902ED98EB4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

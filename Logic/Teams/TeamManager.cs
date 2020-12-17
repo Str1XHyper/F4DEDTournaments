@@ -5,7 +5,7 @@ using System.Text;
 using IdGenerator;
 using DAL;
 
-namespace Logic.Teams
+namespace Logic
 {
     public enum TeamErrorCodes
     {
@@ -16,6 +16,7 @@ namespace Logic.Teams
 
     public class TeamManager
     {
+<<<<<<< HEAD
         ITeamCollectionDB teamManagerDB = new TeamDB();
         List<Team> teams = new List<Team>();
         Generator idGenerator = new Generator();
@@ -30,6 +31,10 @@ namespace Logic.Teams
             }
         }
 
+=======
+        ITeamCollectionDB teamManagerDB = new TeamManagerDB();
+        Generator idGenerator = new Generator();
+>>>>>>> parent of daca28f... Added Mailing System and interface segregation
         public TeamErrorCodes CreateTeam(TeamDTO teamDTO,string UserID)
         {
             var result = teamManagerDB.FindTeamByName(teamDTO.TeamName);
@@ -39,16 +44,11 @@ namespace Logic.Teams
             }
             teamDTO.TeamID = idGenerator.GenerateID(12);
             teamManagerDB.CreateTeam(teamDTO);
-            Team team = new Team(teamDTO);
-            teams.Add(team);
-            team.AddPlayer(UserID, TeamRoles.Owner);
+            teamManagerDB.AddPlayerToTeam(UserID, teamDTO.TeamID, (int) TeamRoles.Owner);
             return TeamErrorCodes.NoError;
         }
-        public Team GetTeamByID(string ID)
-        {
-            var team = teams.Find(x => x.TeamID == ID);
-            return team;
-        }
+
+        public TeamDTO GetTeamByID(string ID) => teamManagerDB.FindTeamByID(ID);
 
         public UserTeamDTO GetUserTeam(string UserID)
         {
@@ -63,6 +63,7 @@ namespace Logic.Teams
             return userTeamDTO;
         }
 
+<<<<<<< HEAD
         public Team GetTeamByUser(string UserID)
         {
             var TeamDTO = teamManagerDB.FindTeamByUser(UserID);
@@ -71,14 +72,17 @@ namespace Logic.Teams
         }
 
         public List<Team> GetTop10Teams()
+=======
+        public List<TeamDTO> GetTop10Teams()
+>>>>>>> parent of daca28f... Added Mailing System and interface segregation
         {
+            var teams = teamManagerDB.FindAllTeams();
             if(teams.Count <= 10)
             {
                 return teams;
             }
-            List<Team> top10 = teams;
-            top10.RemoveRange(10, teams.Count);
-            return top10;
+            teams.RemoveRange(10, teams.Count);
+            return teams;
         }
     }
 }

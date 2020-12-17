@@ -1,10 +1,10 @@
 ﻿@model F4DEDTournaments.Models.Team.IndexViewModel;
-@using Logic.Teams;
+@using Model;
 @{
     ViewData["Title"] = "Index";
 }
 
-@foreach (Team team in Model.Teams)
+@foreach (TeamDTO team in Model.Teams)
 {
     <div class="pb-3">
 

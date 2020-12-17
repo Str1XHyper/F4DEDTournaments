@@ -1,13 +1,11 @@
-﻿using Interface;
-using Model;
+﻿using Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace DAL
 {
-
-    public class TeamDB : ITeamCollectionDB, ITeamDB
+    public class TeamManagerDB : ITeamCollectionDB
     {
         public bool CreateTeam(TeamDTO teamDTO)
         {

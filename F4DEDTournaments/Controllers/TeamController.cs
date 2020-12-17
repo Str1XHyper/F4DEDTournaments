@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using F4DEDTournaments.Models;
 using F4DEDTournaments.Models.Team;
-using Logic.Teams;
+using Logic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Model;
