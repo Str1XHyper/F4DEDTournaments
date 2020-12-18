@@ -14,10 +14,8 @@ namespace DAL.Match
                 new string[] {"@ID", matchDTO.ID},
                 new string[] {"@Game", ((int)matchDTO.Game).ToString()},
                 new string[] {"@PlayDate", matchDTO.PlayDate.ToString("YYYY-MM-DD hh:mm:ss")},
-                new string[] {"@ScoreTeam1", matchDTO.ScoreTeam1.ToString()},
-                new string[] {"@ScoreTeam2", matchDTO.ScoreTeam2.ToString()},
             };
-            var result = SQLConnection.ExecuteNonSearchQueryParameters("INSERT INTO Match (ID,Game,PlayDate,ScoreTeam1,ScoreTeam2) VALUES (@ID,@Game,@PlayDate,@ScoreTeam1,@ScoreTeam2)", param);
+            var result = SQLConnection.ExecuteNonSearchQueryParameters("INSERT INTO Match (ID,Game,PlayDate) VALUES (@ID,@Game,@PlayDate)", param);
             return result;
         }
     }

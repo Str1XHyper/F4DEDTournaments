@@ -9,12 +9,12 @@
 <link href="~/css/Team/ViewTeam.css" rel="stylesheet" />
 <div class="container">
     <div class="row flex-lg-nowrap">
-        <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
+        <div class="col-12 col-lg-auto mb-3" style="width: 250px;">
             <div class="card p-3">
                 <div class="e-navlist e-navlist--active-bg">
                     <ul class="nav">
                         <li class="nav-item"><a class="nav-link px-2 active" href="#"><i class="fa fa-fw fa-bar-chart mr-1"></i><span>Statistics (WIP)</span></a></li>
-                        <li class="nav-item"><button id="recentMatchesBtn">Recent matches</button></li>
+                        <li class="nav-item"><a class="nav-link px-2 active" href="#" id="recentMatchesBtn"><i class="fa fa-fw fa-trophy mr-1" aria-hidden="true"></i>Recent matches</a></li>
                         <li class="nav-item"><a class="nav-link px-2" asp-action="EditTeam" asp-route-TeamID="@Model.Team.TeamID"><i class="fa fa-fw fa-cog mr-1"></i><span>Edit</span></a></li>
                     </ul>
                 </div>
