@@ -176,7 +176,7 @@ namespace DAL
             }; 
             //SELECT T.TeamName FROM TeamMatch TM INNER JOIN Teams T ON T.TeamID = TM.TeamID WHERE MatchID IN (SELECT MatchID FROM TeamMatch TM WHERE TeamID = @TeamID) AND T.TeamID <> @TeamID
             var result = SQLConnection.ExecuteSearchQueryParameters(
-                @"SELECT T.TeamName AS Enemy, TM.Score AS EnemyScore, (SELECT Score FROM TeamMatch WHERE TeamID = 'd2OU3msZ0t7E') AS OwnScore
+                @"SELECT T.TeamName AS Enemy, TM.Score AS EnemyScore, (SELECT Score FROM TeamMatch WHERE TeamID = @TeamID) AS OwnScore
                     FROM (TeamMatch TM
                     INNER JOIN Teams T ON T.TeamID = TM.TeamID)
                     INNER JOIN `Match` M ON M.ID = TM.MatchID
@@ -184,8 +184,8 @@ namespace DAL
                     (
                     SELECT MatchID
                     FROM TeamMatch TM
-                    WHERE TeamID = 'd2OU3msZ0t7E'
-                    ) AND T.TeamID <> 'd2OU3msZ0t7E'
+                    WHERE TeamID = @TeamID
+                    ) AND T.TeamID <> @TeamID
                     ORDER BY M.PlayDate", param);
             List<TeamMatchResultDTO> returnList = new List<TeamMatchResultDTO>();
             foreach(var row in result)
