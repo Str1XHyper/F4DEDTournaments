@@ -40,6 +40,8 @@ namespace Logic.Teams
 
         }
 
+        public List<TeamMatchResultDTO> GetResults() => teamDB.GetPreviousResults(this.TeamID);
+
         public bool UpdateTeam()
         {
             TeamDTO teamDTO = new TeamDTO()

@@ -4,6 +4,12 @@ using System.Text;
 
 namespace Model
 {
+    public enum TourneyStatus{
+        Planned = 0,
+        Active = 1,
+        Finished = 2
+    }
+
     public class TournamentDTO
     {
         public string ID { get; set; }
@@ -14,5 +20,7 @@ namespace Model
         public int BuyIn { get; set; }
         public Games Game { get; set; }
         public DateTime StartTime { get; set; }
+        public TourneyStatus Status { get; set; }
+        public int TeamSize { get; set; }
     }
 }

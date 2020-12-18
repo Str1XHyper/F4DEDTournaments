@@ -22,6 +22,8 @@ namespace F4DEDTournaments.Models.Tournament
         [Required]
         public Games Game { get; set; }
         [Required]
+        [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd hh:mm}", ApplyFormatInEditMode = true)]
         public DateTime StartTime { get; set; }
     }
 }

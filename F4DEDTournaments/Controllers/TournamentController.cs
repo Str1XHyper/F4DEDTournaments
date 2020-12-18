@@ -23,6 +23,7 @@ namespace F4DEDTournaments.Controllers
                 OrganisationID = OrganisationID == null ? "null" : OrganisationID
             };
             ViewData["OrgName"] = OrganisationID == null ? null : organisationManager.GetOrganisationByID(OrganisationID).Name;
+            model.StartTime = DateTime.Now;
             return View(model);
         }
 
@@ -39,8 +40,19 @@ namespace F4DEDTournaments.Controllers
                 Game = model.Game,
                 StartTime = model.StartTime
             };
-            tournamentManager.CreateTeam(tournamentDTO);
-            return RedirectToAction("Index");
+            var result = tournamentManager.CreateTournament(tournamentDTO);
+            switch (result)
+            {
+                case TournamentErrorCodes.NoError:
+                    return RedirectToAction("Index");
+                case TournamentErrorCodes.BuyInLessOrEqualToPrize:
+                    ModelState.AddModelError("BuyIn", "Buy In can't be less or equal to prize!");
+                    ViewData["Creator"] = model.OrganisationID == null ? "User" : "Org";
+                    return View();
+                case TournamentErrorCodes.UnexpectedError:
+                default:
+                    return RedirectToAction("Error", "Home", new { errorMessage = "An Unknown error occured while creating a tournament", errorDate = DateTime.Now });
+            }
         }
         public IActionResult Index()
         {

@@ -4,20 +4,27 @@ using System.Text;
 using Model;
 using DAL.Tournament;
 using IdGenerator;
+using Interface.Tournament;
 
 namespace Logic.Tournament
 {
     public enum TournamentErrorCodes
     {
+        UnexpectedError = -1,
         NoError = 0,
-        
+        BuyInLessOrEqualToPrize = 1,
+
     }
     public class TournamentManager
     {
-        private TournamentDB tournamentDB = new TournamentDB();
+        private ITournamentDB tournamentDB = new TournamentDB();
         Generator idGenerator = new Generator();
-        public TournamentErrorCodes CreateTeam(TournamentDTO tournamentDTO)
+        public TournamentErrorCodes CreateTournament(TournamentDTO tournamentDTO)
         {
+            if(tournamentDTO.BuyIn > 0 && tournamentDTO.BuyIn >= tournamentDTO.Prize)
+            {
+                return TournamentErrorCodes.BuyInLessOrEqualToPrize;
+            }
             tournamentDTO.ID = idGenerator.GenerateID(12);
             if(tournamentDTO.OrganisationID == "null")
             {

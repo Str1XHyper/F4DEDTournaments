@@ -1,10 +1,12 @@
 ﻿@model TeamViewModel
+@using Model
 @{
     ViewData["Title"] = "ViewTeam";
 }
 
 
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="~/css/Team/ViewTeam.css" rel="stylesheet" />
 <div class="container">
     <div class="row flex-lg-nowrap">
         <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
@@ -12,7 +14,7 @@
                 <div class="e-navlist e-navlist--active-bg">
                     <ul class="nav">
                         <li class="nav-item"><a class="nav-link px-2 active" href="#"><i class="fa fa-fw fa-bar-chart mr-1"></i><span>Statistics (WIP)</span></a></li>
-                        <li class="nav-item"><a class="nav-link px-2" href="#"><i class="fa fa-fw fa-th mr-1"></i><span>Recent matches (WIP)</span></a></li>
+                        <li class="nav-item"><button id="recentMatchesBtn">Recent matches</button></li>
                         <li class="nav-item"><a class="nav-link px-2" asp-action="EditTeam" asp-route-TeamID="@Model.Team.TeamID"><i class="fa fa-fw fa-cog mr-1"></i><span>Edit</span></a></li>
                     </ul>
                 </div>
@@ -119,7 +121,7 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <div class="px-xl-3">
-                                <b>Members:</b><br/>
+                                <b>Members:</b><br />
                                 @foreach (string Member in Model.Members)
                                 {
                                     string User = "• " + Member;
@@ -135,3 +137,24 @@
         </div>
     </div>
 </div>
+
+<div id="recentMatches" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        @foreach (TeamMatchResultDTO match in Model.RecentMatches)
+        {
+            string WonLoss = match.Won ? "Won" : "Loss";
+            <div class="row">
+                <div class="col text-center">
+                    @Model.Team.TeamName    @match.ScoreSelf - @match.ScoreOpponent     @match.OpponentName
+                </div>
+                <div class="col text-center">
+                    <b>@WonLoss</b>
+                </div>
+            </div>
+        }
+    </div>
+
+</div>
+
+<script src="~/js/Team/ViewTeam.js"></script>

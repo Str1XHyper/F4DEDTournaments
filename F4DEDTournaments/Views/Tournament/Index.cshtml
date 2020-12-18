@@ -14,28 +14,56 @@
                     foreach (var tournament in Model.Tournaments)
                     {
                         <div class="pb-2">
-                            @{
-                                string tournamentString = "";
-                                if (tournament.BuyIn == 0)
-                                {
-                                    tournamentString = $"{tournament.Name}, Prize: ${tournament.Prize}, Buy in: Free";
-                                    <a class="btn btn-primary text-white">Enter Tournament</a>
-                                }
-                                else
-                                {
-                                    tournamentString = $"{tournament.Name}, Prize: ${tournament.Prize}, Buy in: {tournament.BuyIn}";
-
-                                    <a class="btn btn-primary text-white">Buy in</a>
-                                }
-                                @tournamentString
-                            }
+                            <div class="card">
+                                <div class="card-header p-2">
+                                    <b>@tournament.Name</b>
+                                </div>
+                                <div class="card-body  p-2">
+                                    <div class="col">
+                                        <a>Prize pool: @tournament.Prize Tokens</a>
+                                    </div>
+                                    <div class="col">
+                                        @if (tournament.BuyIn > 0)
+                                        {
+                                            <a>Buy in: @tournament.BuyIn Tokens</a>
+                                        }
+                                        else
+                                        {
+                                            <a>Buy in: Free</a>
+                                        }
+                                    </div>
+                                    <div class="col">
+                                        @{ 
+                                            var timeleft = tournament.StartTime - DateTime.Now;
+                                            string StartsIn ="";
+                                            if(timeleft < TimeSpan.Zero)
+                                            {
+                                                StartsIn = "-";
+                                                timeleft *= -1;
+                                            }
+                                            StartsIn += timeleft.ToString(@"hh\:mm\:ss");
+                                        }
+                                        Starts in: @StartsIn
+                                    </div>
+                                </div>
+                                <div class="card-footer p-2">
+                                    @if (tournament.BuyIn == 0)
+                                    {
+                                        <a class="btn btn-primary text-white">Enter Tournament</a>
+                                    }
+                                    else
+                                    {
+                                        <a class="btn btn-primary text-white">Buy in</a>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     }
                 }
                 else
                 {
                     <div>There are planned tournaments</div>
-                    <a class="btn btn-primary text-white">Create a Tournament</a>
+                    <a asp-action="CreateTournament" class="btn btn-primary text-white mt-2">Create a Tournament</a>
                 }
             </div>
         </div>
@@ -47,7 +75,7 @@
                     Create
                 </div>
                 <div class="card-body">
-                    Create a tournament
+                    <a asp-action="CreateTournament" class="btn btn-primary text-white">Create a Tournament</a>
                 </div>
             </div>
         </div>

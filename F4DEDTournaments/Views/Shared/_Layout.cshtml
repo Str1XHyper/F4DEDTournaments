@@ -34,6 +34,12 @@
                                 <a class="nav-link text-light" asp-area="" asp-controller="Tournament" asp-action="Index">Tournament</a>
                             </li>
                         }
+                        @if (User.IsInRole("Developer"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="ListRoles">Roles</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

@@ -79,7 +79,7 @@ namespace DAL
                 new string[] { "@UserID", userID},
             };
             var TeamID = SQLConnection.ExecuteSearchQueryParameters("SELECT TeamID FROM UserTeams Where UserID = @UserID", param);
-            if(TeamID == null)
+            if(TeamID.Count == 0)
             {
                 return null;
             }
@@ -158,24 +158,50 @@ namespace DAL
             {
                 new string[] { "@TeamID", teamID},
             };
-            List<string[]> UserRoles = SQLConnection.ExecuteSearchQueryParameters("SELECT UserID,Role FROM UserTeams Where TeamID = @TeamID", param);
+            List<string[]> Members = SQLConnection.ExecuteSearchQueryParameters("SELECT Users.UserName FROM UserTeams UT INNER JOIN AspNetUsers Users ON UT.UserID = Users.Id WHERE UT.TeamID = @TeamID", param);
 
-            param = new List<string[]>();
-            string query = "SELECT UserName FROM AspNetUsers WHERE Id in (";
-            for (int i = 0; i < UserRoles.Count; i++)
-            {
-                param.Add(new string[] { $"@UserID{i}", UserRoles[i][0]});
-                query += $"@UserID{i},";
-            }
-            query = query.Remove(query.Length-1, 1);
-            query += ")";
-            var result = SQLConnection.ExecuteSearchQueryParameters(query, param);
             List<string> returnResult = new List<string>();
-            foreach(string[] row in result)
+            foreach(string[] row in Members)
             {
                 returnResult.Add(row[0]);
             }
             return returnResult;
+        }
+
+        public List<TeamMatchResultDTO> GetPreviousResults(string teamID)
+        {
+            List<string[]> param = new List<string[]>
+            {
+                new string[] {"@TeamID", teamID}
+            }; 
+            //SELECT T.TeamName FROM TeamMatch TM INNER JOIN Teams T ON T.TeamID = TM.TeamID WHERE MatchID IN (SELECT MatchID FROM TeamMatch TM WHERE TeamID = @TeamID) AND T.TeamID <> @TeamID
+            var result = SQLConnection.ExecuteSearchQueryParameters(
+                @"SELECT T.TeamName AS Enemy, TM.Score AS EnemyScore, (SELECT Score FROM TeamMatch WHERE TeamID = 'd2OU3msZ0t7E') AS OwnScore
+                    FROM (TeamMatch TM
+                    INNER JOIN Teams T ON T.TeamID = TM.TeamID)
+                    INNER JOIN `Match` M ON M.ID = TM.MatchID
+                    WHERE MatchID IN
+                    (
+                    SELECT MatchID
+                    FROM TeamMatch TM
+                    WHERE TeamID = 'd2OU3msZ0t7E'
+                    ) AND T.TeamID <> 'd2OU3msZ0t7E'
+                    ORDER BY M.PlayDate", param);
+            List<TeamMatchResultDTO> returnList = new List<TeamMatchResultDTO>();
+            foreach(var row in result)
+            {
+                TeamMatchResultDTO resultDTO = new TeamMatchResultDTO()
+                {
+                    OpponentName = row[0],
+                    ScoreOpponent = Convert.ToInt32(row[1]),
+                    ScoreSelf = Convert.ToInt32(row[2]),
+                    Won = Convert.ToInt32(row[1]) < Convert.ToInt32(row[2]),
+                };
+
+                resultDTO.Won = resultDTO.ScoreSelf > resultDTO.ScoreOpponent;
+                returnList.Add(resultDTO);
+            }
+            return returnList;
         }
     }
 }

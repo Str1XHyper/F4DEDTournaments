@@ -66,6 +66,10 @@ namespace Logic.Teams
         public Team GetTeamByUser(string UserID)
         {
             var TeamDTO = teamManagerDB.FindTeamByUser(UserID);
+            if(TeamDTO == null)
+            {
+                return null;
+            }
             var team = teams.Find(x => x.TeamID == TeamDTO.TeamID);
             return team;
         }

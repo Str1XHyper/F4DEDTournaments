@@ -1,47 +1,140 @@
 ﻿@model F4DEDTournaments.Models.Team.IndexViewModel;
 @using Logic.Teams;
+@using Model;
 @{
     ViewData["Title"] = "Index";
+    bool isInTeam = (bool)ViewData["IsInTeam"];
 }
-
-@foreach (Team team in Model.Teams)
+@if (isInTeam)
 {
-    <div class="pb-3">
-
-        <div class="card ">
-            <div class="card-header">
-                @team.TeamName
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h1>Results</h1>
+                </div>
+                <div class="card-body">
+                    @foreach (TeamMatchResultDTO result in Model.PreviousResults)
+                    {
+                        string WonLoss = result.Won ? "Won" : "Loss";
+                        <div class="row">
+                            <div class="col text-center">
+                                @Model.CurrentTeam.TeamName    @result.ScoreSelf - @result.ScoreOpponent     @result.OpponentName
+                            </div>
+                            <div class="col text-center">
+                                <b>@WonLoss</b>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer">
+                    <a asp-action="ViewTeam" class="btn btn-primary">
+                        Go to Team Page
+                    </a>
+                </div>
             </div>
-            <div class="card-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            Description: @team.Description
-                        </div>
-                        <div class="col">
-                            Minimum Elo: @team.MinimumElo
-                        </div>
-                        <div class="col">
-                            Minimum Age: @team.MinimumAge
-                        </div>
+        </div>
+        <div class="col">
+            <div class="pb-3">
+                <div class="card ">
+                    <div class="card-header">
+                        Roster
+                    </div>
+                    <div class="card-body">
+                        @foreach (string member in Model.CurrentRoster)
+                        {
+                            string User = "• " + member;
+                            @User
+                            <br />
+                        }
                     </div>
                 </div>
             </div>
-            <div class="card-footer">
-                @if (team.IsPrivate)
-                {
-                    <a class="btn btn-danger text-white">
-                        Send invite
-                    </a>
-                }
-                else
-                {
-                    <a class="btn btn-primary text-white">
-                        Join
-                    </a>
-                }
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        Search for players
+                    </div>
+                    <div class="card-body">
+                        <a class="btn btn-primary">
+                            Go to Players Page (WIP)
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 }
+else
+{
+    <div class="row">
+        <div class="col">
+            <h1>Leaderboard</h1>
+            @foreach (Team team in Model.Teams)
+            {
+                <div class="pb-3">
+                    <div class="card ">
+                        <div class="card-header">
+                            @team.TeamName
+                        </div>
+                        <div class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        Description: @team.Description
+                                    </div>
+                                    <div class="col">
+                                        Minimum Elo: @team.MinimumElo
+                                    </div>
+                                    <div class="col">
+                                        Minimum Age: @team.MinimumAge
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            @if (team.IsPrivate)
+                            {
+                                <a class="btn btn-danger text-white">
+                                    Send invite
+                                </a>
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary text-white">
+                                    Join
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
 
+        </div>
+        <div class="col">
+            <div class="pb-3">
+                <div class="card ">
+                    <div class="card-header">
+                        Create
+                    </div>
+                    <div class="card-body">
+                        <a asp-action="CreateTeam" class="btn btn-primary text-white">Create a Team</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        Players looking for a team
+                    </div>
+                    <div class="card-body">
+                        <div>
+                            Placeholder text
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}

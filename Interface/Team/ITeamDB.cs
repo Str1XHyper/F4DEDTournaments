@@ -9,5 +9,6 @@ namespace Interface
         bool AddPlayerToTeam(string PlayerID, string TeamID, int Role);
         bool EditTeam(TeamDTO teamDTO);
         List<string> GetMembers(string teamID);
+        List<TeamMatchResultDTO> GetPreviousResults(string teamID);
     }
 }
