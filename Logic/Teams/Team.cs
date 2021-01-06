@@ -76,5 +76,18 @@ namespace Logic.Teams
         {
             emailManager.SendInvite("tijnvanveghel@gmail.com", "Tijn van Veghel", "F4DED");
         }
+
+        public Stats GetStats()
+        {
+            return new Stats { Wins = 2, Losses = 1 };
+        }
+
+        public TeamRoles GetRole(string UserID) => teamDB.GetRole(UserID,TeamID);
+
+        public struct Stats
+        {
+            public int Wins;
+            public int Losses;
+        }
     }
 }

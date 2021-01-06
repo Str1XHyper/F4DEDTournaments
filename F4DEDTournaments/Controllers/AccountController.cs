@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using F4DEDTournaments.Models;
+using F4DEDTournaments.Models.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -95,95 +96,52 @@ namespace F4DEDTournaments.Controllers
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> EditProfile()
-        {
-            var LoggedInUser = await userManager.GetUserAsync(User);
 
-            if (LoggedInUser == null)
+        [HttpGet]
+        public async Task<IActionResult> ViewProfile(string UserID)
+        {
+            var currentUser = await userManager.GetUserAsync(User);
+
+            AppUser viewedUser;
+
+            if (UserID != null)
+            {
+                viewedUser = await userManager.FindByIdAsync(UserID);
+            } else
+            {
+                viewedUser = currentUser;
+            }
+            
+            if (currentUser == null && UserID == null)
             {
                 return RedirectToAction("Register");
             }
 
-            EditProfileViewModel model = new EditProfileViewModel()
+
+
+            ProfileViewModel model = new ProfileViewModel()
             {
-                Email = LoggedInUser.Email,
-                Username = LoggedInUser.UserName
+                FirstName = viewedUser.FirstName,
+                LastName = viewedUser.LastName,
+                Username = viewedUser.UserName,
+                Email = viewedUser.Email,
+                Description = viewedUser.Description,
+                CountryOfHeritage = viewedUser.CountryOfHeritage,
+                MainLanguage = viewedUser.SpokenLanguages,
+                IsLoggedInUser = viewedUser == currentUser
             };
-
             return View(model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditProfile(EditProfileViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-
-            var currentUser = await userManager.GetUserAsync(User);
-
-
-            currentUser.SpokenLanguages = Languages.Dutch;
-            currentUser.CountryOfHeritage = Countries.Netherlands;
-            currentUser.Description = "Lorem Ipsum";
-            currentUser.FirstName = "Tijn";
-            currentUser.LastName = "van Veghel";
-
-            var result = await userManager.UpdateAsync(currentUser);
-
-            bool isPasswordCorrect = await userManager.CheckPasswordAsync(currentUser, model.OldPassword);
-            if (isPasswordCorrect)
-            {
-                var emailResult = await userManager.FindByEmailAsync(model.Email);
-                if (emailResult == null || emailResult == currentUser)
-                {
-                    if (currentUser.Email != model.Email)
-                    {
-                        await userManager.SetEmailAsync(currentUser, model.Email);
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("Email", "Email already exists!");
-                }
-
-                var usernameResult = await userManager.FindByNameAsync(model.Username);
-                if (usernameResult == null || usernameResult == currentUser)
-                {
-                    if (User.Identity.Name != model.Username)
-                        await userManager.SetUserNameAsync(currentUser, model.Username);
-                }
-                else
-                {
-                    ModelState.AddModelError("Username", "Username already exists!");
-                }
-
-                if (model.NewPassword != null)
-                {
-                    await userManager.ChangePasswordAsync(currentUser, model.OldPassword, model.NewPassword);
-                }
-
-                /*
-                 currentUser has all properties needed
-                 */
-
-
-            }
-
-            else // If old password isn't correct
-            {
-                ModelState.AddModelError("OldPassword", "Old password isn't correct!");
-            }
-            return View(model);
-        }
-
-        public async Task<IActionResult> NewProfile()
+        [HttpGet]
+        public async Task<IActionResult> EditProfile()
         {
             var currentUser = await userManager.GetUserAsync(User);
 
+            if (currentUser == null)
+            {
+                return RedirectToAction("Register");
+            }
             EditProfileViewModel model = new EditProfileViewModel()
             {
                 FirstName = currentUser.FirstName,
@@ -194,6 +152,76 @@ namespace F4DEDTournaments.Controllers
                 CountryOfHeritage = currentUser.CountryOfHeritage,
                 SpokenLanguages = currentUser.SpokenLanguages,
             };
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProfile(EditProfileViewModel model)
+        {
+            var currentUser = await userManager.GetUserAsync(User);
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            bool isPasswordCorrect = await userManager.CheckPasswordAsync(currentUser, model.OldPassword);
+
+            if (isPasswordCorrect)
+            {
+                bool modelIsValid = true;
+
+                var emailResult = await userManager.FindByEmailAsync(model.Email);
+                var usernameResult = await userManager.FindByNameAsync(model.Username);
+
+                if (emailResult != null && emailResult != currentUser)
+                {
+                    ModelState.AddModelError("Email", "Email is already in use!");
+                    modelIsValid = false;
+                }
+                if (usernameResult != null && emailResult != currentUser)
+                {
+                    ModelState.AddModelError("Username", "Username is already in use!");
+                    modelIsValid = false;
+                }
+                if (model.NewPassword != model.ConfirmNewPassword)
+                {
+                    ModelState.AddModelError("ConfirmNewPassword", "Passwords do not match!");
+                    modelIsValid = false;
+                }
+
+                if (!modelIsValid)
+                {
+                    return View(model);
+                }
+
+                if (model.Email != string.Empty && model.Email != currentUser.Email)
+                {
+                    await userManager.SetEmailAsync(currentUser, model.Email);
+                }
+                if(model.Username != string.Empty && model.Username != currentUser.UserName)
+                {
+                    await userManager.SetUserNameAsync(currentUser, model.Username);
+                }
+                if (model.NewPassword != null)
+                {
+                    await userManager.ChangePasswordAsync(currentUser, model.OldPassword, model.NewPassword);
+                }
+
+                currentUser.SpokenLanguages = model.SpokenLanguages;
+                currentUser.CountryOfHeritage = model.CountryOfHeritage;
+                currentUser.Description = model.Description;
+                currentUser.FirstName = model.FirstName;
+                currentUser.LastName = model.LastName;
+
+                var result = await userManager.UpdateAsync(currentUser);
+
+            }
+            else
+            {
+                ModelState.AddModelError("OldPassword", "Password isn't correct!");
+            }
+
             return View(model);
         }
     }

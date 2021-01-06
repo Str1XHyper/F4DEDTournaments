@@ -9,6 +9,7 @@ namespace F4DEDTournaments.Models.Team
     public class IndexViewModel
     {
         public List<Logic.Teams.Team> Teams { get; set; }
+        public List<TeamStatsDTO> Stats { get; set; }
 
         public Logic.Teams.Team CurrentTeam { get; set; }
         public List<TeamMatchResultDTO> PreviousResults { get; set; }

@@ -6,6 +6,7 @@ namespace Model
 {
     public enum TeamRoles
     {
+        NonMember = -1,
         Member = 0,
         Admin = 1,
         Owner = 2

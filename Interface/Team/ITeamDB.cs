@@ -10,5 +10,6 @@ namespace Interface
         bool EditTeam(TeamDTO teamDTO);
         List<string> GetMembers(string teamID);
         List<TeamMatchResultDTO> GetPreviousResults(string teamID);
+        TeamRoles GetRole(string userID,string teamID);
     }
 }

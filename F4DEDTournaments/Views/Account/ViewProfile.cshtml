@@ -1,0 +1,132 @@
+﻿@model F4DEDTournaments.Models.Account.ProfileViewModel
+@using Model;
+@{
+    ViewData["Title"] = "Profile";
+}
+
+@{
+    var Countries = Html.GetEnumSelectList<Countries>().OrderBy(a => a.ToString(), StringComparer.CurrentCultureIgnoreCase);
+    var Languages = Html.GetEnumSelectList<Languages>().OrderBy(a => a.ToString(), StringComparer.CurrentCultureIgnoreCase);
+}
+
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row flex-lg-nowrap">
+        <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
+            <div class="card p-3">
+                <div class="e-navlist e-navlist--active-bg">
+                    <ul class="nav">
+                        <li class="nav-item"><a class="nav-link px-2 active" href="#"><i class="fa fa-fw fa-bar-chart mr-1"></i><span>Statistics (WIP)</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2 active" href="#"><i class="fa fa-fw fa-trophy mr-1" aria-hidden="true"></i>Recent matches (WIP)</a></li>
+                        @if (Model.IsLoggedInUser)
+                        {
+                            <li class="nav-item"><a class="nav-link px-2" asp-action="EditProfile"><i class="fa fa-fw fa-cog mr-1"></i><span>Edit</span></a></li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="row">
+                <div class="col mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="e-profile">
+                                <div class="row">
+                                    <div class="col-12 col-sm-auto mb-3">
+                                        <div class="mx-auto" style="width: 140px;">
+                                            <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
+                                                <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">140x140</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                        <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                            <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">@Model.FirstName @Model.LastName</h4>
+                                            <p class="mb-0">@Model.Username</p>
+                                            @*<div class="text-muted"><small>Last seen 2 hours ago</small></div>*@
+                                            @*<div class="mt-2">
+                                                    <button class="btn btn-primary" type="button">
+                                                        <i class="fa fa-fw fa-camera"></i>
+                                                        <span>Change Photo</span>
+                                                    </button>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item"><a href="" class="active nav-link">Settings</a></li>
+                                </ul>
+                                <div class="tab-content pt-3">
+                                    <div class="tab-pane active">
+                                        <div class="row">
+                                            <div class="col">
+                                                <div class="row">
+                                                    <div class="col mb-3">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                About
+                                                            </div>
+                                                            <div class="card-body">
+                                                                @Model.Description
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                Nationality
+                                                            </div>
+                                                            <div class="card-body">
+                                                                @Model.CountryOfHeritage
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                Main Language
+                                                            </div>
+                                                            <div class="card-body">
+                                                                @Model.MainLanguage
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-3 mb-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="px-xl-3">
+                                <button class="btn btn-block btn-secondary" asp-controller="Account" asp-action="Logout">
+                                    <i class="fa fa-sign-out"></i>
+                                    <span>Logout</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h6 class="card-title font-weight-bold">Support</h6>
+                            <p class="card-text">Get fast, free help from our friendly assistants.</p>
+                            <button type="button" class="btn btn-primary">Contact Us (WIP)</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

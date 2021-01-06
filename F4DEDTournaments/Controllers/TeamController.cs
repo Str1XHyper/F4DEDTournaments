@@ -57,16 +57,28 @@ namespace F4DEDTournaments.Controllers
         }
 
 
-        public async Task<IActionResult> ViewTeam()
+        public async Task<IActionResult> ViewTeam(string TeamID)
         {
+            Team team;
+            TeamRoles role;
             var currentUser = await userManager.GetUserAsync(User);
-            var userTeamDTO = teamManager.GetUserTeam(currentUser.Id);
-            var members = ((Team)userTeamDTO.Team).GetMembers();
-            var recentMatches = ((Team)userTeamDTO.Team).GetResults();
+
+            if (TeamID == null)
+            {
+                var userTeamDTO = teamManager.GetUserTeam(currentUser.Id);
+                team = (Team)userTeamDTO.Team;
+                role = userTeamDTO.Role;
+            } else
+            {
+                team = teamManager.GetTeamByID(TeamID);
+                role = team.GetRole(currentUser.Id);
+            }
+            var members = team.GetMembers();
+            var recentMatches = team.GetResults();
             TeamViewModel model = new TeamViewModel()
             {
-                Team = (Team)userTeamDTO.Team,
-                Role = userTeamDTO.Role,
+                Team = team,
+                Role = role,
                 Members = members,
                 RecentMatches = recentMatches
             };
@@ -89,6 +101,17 @@ namespace F4DEDTournaments.Controllers
             else
             {
                 var teams = teamManager.GetTop10Teams();
+                model.Stats = new List<TeamStatsDTO>();
+                foreach (Team team in teams)
+                {
+                    var stats = team.GetStats();
+                    model.Stats.Add(new TeamStatsDTO
+                    {
+                        Wins = stats.Wins,
+                        Losses = stats.Losses,
+                        TeamID = team.TeamID
+                    });
+                }
                 model.Teams = teams;
                 ViewData["IsInTeam"] = false;
             }

@@ -113,7 +113,7 @@ namespace DAL
                 Country = (Countries)Convert.ToInt32(row[5]),
                 Language = (Languages)Convert.ToInt32(row[6]),
                 MinimumAge = Convert.ToInt32(row[7]),
-                PlayedGame = (Games)Convert.ToInt32(row[7])
+                PlayedGame = (Games)Convert.ToInt32(row[8])
             };
             return teamDTO;
         }
@@ -133,7 +133,7 @@ namespace DAL
                     Country = (Countries)Convert.ToInt32(row[5]),
                     Language = (Languages)Convert.ToInt32(row[6]),
                     MinimumAge = Convert.ToInt32(row[7]),
-                    PlayedGame = (Games)Convert.ToInt32(row[7])
+                    PlayedGame = (Games)Convert.ToInt32(row[8])
                 });
             }
 
@@ -158,8 +158,12 @@ namespace DAL
             {
                 new string[] { "@TeamID", teamID},
             };
-            List<string[]> Members = SQLConnection.ExecuteSearchQueryParameters("SELECT Users.UserName FROM UserTeams UT INNER JOIN AspNetUsers Users ON UT.UserID = Users.Id WHERE UT.TeamID = @TeamID", param);
-
+            List<string[]> Members = SQLConnection.ExecuteSearchQueryParameters(
+                @"SELECT Users.UserName 
+                FROM UserTeams UT 
+                INNER JOIN AspNetUsers Users 
+                ON UT.UserID = Users.Id 
+                WHERE UT.TeamID = @TeamID", param);
             List<string> returnResult = new List<string>();
             foreach(string[] row in Members)
             {
@@ -202,6 +206,18 @@ namespace DAL
                 returnList.Add(resultDTO);
             }
             return returnList;
+        }
+
+        public TeamRoles GetRole(string userID, string teamID)
+        {
+            List<string[]> param = new List<string[]>
+            {
+                new string[] {"@UserID", userID },
+                new string[] {"@TeamID", teamID}
+            };
+            var result = SQLConnection.ExecuteSearchQueryParameters("SELECT Role FROM UserTeams WHERE UserID = @UserID AND TeamID = @TeamID", param);
+            var role = result.Count > 0 ? (TeamRoles)Convert.ToInt32(result[0]) : TeamRoles.NonMember;
+            return role;
         }
     }
 }

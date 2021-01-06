@@ -8,7 +8,7 @@
 @if (isInTeam)
 {
     <div class="row">
-        <div class="col">
+        <div class="col-8">
             <div class="card">
                 <div class="card-header">
                     <h1>Results</h1>
@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-sm">
             <div class="pb-3">
                 <div class="card ">
                     <div class="card-header">
@@ -69,46 +69,31 @@ else
 {
     <div class="row">
         <div class="col">
-            <h1>Leaderboard</h1>
-            @foreach (Team team in Model.Teams)
-            {
-                <div class="pb-3">
-                    <div class="card ">
-                        <div class="card-header">
-                            @team.TeamName
-                        </div>
-                        <div class="card-body">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col">
-                                        Description: @team.Description
-                                    </div>
-                                    <div class="col">
-                                        Minimum Elo: @team.MinimumElo
-                                    </div>
-                                    <div class="col">
-                                        Minimum Age: @team.MinimumAge
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            @if (team.IsPrivate)
-                            {
-                                <a class="btn btn-danger text-white">
-                                    Send invite
-                                </a>
-                            }
-                            else
-                            {
-                                <a class="btn btn-primary text-white">
-                                    Join
-                                </a>
-                            }
-                        </div>
-                    </div>
+            <div class="card">
+                <div class="card-header">
+                    <h1>Leaderboard</h1>
                 </div>
-            }
+                <div class="card-body">
+                    <table>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Name</th>
+                            <th>Wins</th>
+                            <th>Losses</th>
+                        </tr>
+                        @for(int i=0; i<Model.Teams.Count; i++)
+                        {
+                            var stats = Model.Stats.Find(x => x.TeamID == Model.Teams[i].TeamID);
+                            <tr>
+                                <td>@(i+1)</td>
+                                <td><a asp-action="ViewTeam" asp-route-TeamID="@Model.Teams[i].TeamID">@Model.Teams[i].TeamName</a></td>
+                                <td>@stats.Wins</td>
+                                <td>@stats.Losses</td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
 
         </div>
         <div class="col">
@@ -136,5 +121,4 @@ else
             </div>
         </div>
     </div>
-
 }

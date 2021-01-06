@@ -6,7 +6,7 @@ using Model;
 
 namespace DAL.Tournament
 {
-    public class TournamentDB : ITournamentDB
+    public class TournamentDB : ITournamentManagerDB, ITournamentDB
     {
         public bool CreateTournament(TournamentDTO tournamentDTO)
         {
@@ -19,7 +19,7 @@ namespace DAL.Tournament
                 new string[] {"@Prize", tournamentDTO.Prize.ToString()},
                 new string[] {"@BuyIn", tournamentDTO.BuyIn.ToString()},
                 new string[] {"@Game", ((int)tournamentDTO.Game).ToString()},
-                new string[] {"@DateTime", tournamentDTO.StartTime.ToString("yyyy-MM-dd hh:mm:ss") },
+                new string[] {"@DateTime", tournamentDTO.StartTime.ToString("yyyy-MM-dd HH:mm:ss") },
                 new string[] {"@Status", ((int)tournamentDTO.Status).ToString()},
                 new string[] {"@TeamSize", tournamentDTO.TeamSize.ToString()},
             };
@@ -37,7 +37,7 @@ namespace DAL.Tournament
                 new string[] {"@Prize", tournamentDTO.Prize.ToString()},
                 new string[] {"@BuyIn", tournamentDTO.BuyIn.ToString()},
                 new string[] {"@Game", ((int)tournamentDTO.Game).ToString() },
-                new string[] {"@StartTime", tournamentDTO.StartTime.ToString("YYYY-MM-DD hh:mm:ss") },
+                new string[] {"@StartTime", tournamentDTO.StartTime.ToString("YYYY-MM-DD HH:mm:ss") },
                 new string[] {"@TeamSize", tournamentDTO.TeamSize.ToString()},
             };
             return SQLConnection.ExecuteNonSearchQueryParameters($"UPDATE Tournament SET `Name` = @Name, `OrganisationID` = @OrganisationID, `Size` = @Size, `Prize` = @Prize, `BuyIn` = @BuyIn, `Game` = @Game, `TeamSize` = @TeamSize WHERE ID= @ID", param);
@@ -62,7 +62,7 @@ namespace DAL.Tournament
             {
                 new string[] {"@ID", ID},
             };
-            var result = SQLConnection.ExecuteSearchQueryParameters($"SELECT * FROM Tournament Where ID = @ID'", param);
+            var result = SQLConnection.ExecuteSearchQueryParameters($"SELECT * FROM Tournament Where ID = @ID", param);
             return GenerateDTOFromRow(result[0]);
         }
         public List<TournamentDTO> FindAllTournaments()
@@ -104,13 +104,14 @@ namespace DAL.Tournament
                 ID = row[0],
                 Name = row[1],
                 OrganisationID = row[2],
-                Size = Convert.ToInt32(row[3]),
-                Prize = Convert.ToInt32(row[4]),
-                BuyIn = Convert.ToInt32(row[5]),
-                Game = (Games)Convert.ToInt32(row[6]),
-                StartTime = DateTime.Parse(row[7]),
-                Status = (TourneyStatus)Convert.ToInt32(row[8]),
-                TeamSize = Convert.ToInt32(row[9])
+                UserID = row[3],
+                Size = Convert.ToInt32(row[4]),
+                Prize = Convert.ToInt32(row[5]),
+                BuyIn = Convert.ToInt32(row[6]),
+                Game = (Games)Convert.ToInt32(row[7]),
+                StartTime = DateTime.Parse(row[8]),
+                Status = (TourneyStatus)Convert.ToInt32(row[9]),
+                TeamSize = Convert.ToInt32(row[10])
             };
             return tournamentDTO;
         }
@@ -125,16 +126,37 @@ namespace DAL.Tournament
                     ID = row[0],
                     Name = row[1],
                     OrganisationID = row[2],
-                    Size = Convert.ToInt32(row[3]),
-                    Prize = Convert.ToInt32(row[4]),
-                    BuyIn = Convert.ToInt32(row[5]),
-                    Game = (Games)Convert.ToInt32(row[6]),
-                    StartTime = DateTime.Parse(row[7]),
-                    Status = (TourneyStatus)Convert.ToInt32(row[8]),
-                    TeamSize = Convert.ToInt32(row[9])
+                    UserID = row[3],
+                    Size = Convert.ToInt32(row[4]),
+                    Prize = Convert.ToInt32(row[5]),
+                    BuyIn = Convert.ToInt32(row[6]),
+                    Game = (Games)Convert.ToInt32(row[7]),
+                    StartTime = DateTime.Parse(row[8]),
+                    Status = (TourneyStatus)Convert.ToInt32(row[9]),
+                    TeamSize = Convert.ToInt32(row[10])
                 });
             }
             return tournamentList;
+        }
+
+        public string[] GetUsers(string TournamentID)
+        {
+            List<string[]> param = new List<string[]>()
+            {
+                new string[] {"@TournamentID", TournamentID},
+            };
+            var result = SQLConnection.ExecuteSearchQueryParameters(
+                @"SELECT U.UserName
+                  FROM UserTournament UT
+                  INNER JOIN AspNetUsers U
+                  ON UT.UserID = U.Id
+                  WHERE UT.TournamentID = @TournamentID",param);
+            string[] Users = new string[result.Count];
+            for(int i =0; i<Users.Length; i++)
+            {
+                Users[i] = result[i][0];
+            }
+            return Users;
         }
     }
 }

@@ -1,17 +1,11 @@
-﻿using Model;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Interface.Tournament
 {
     public interface ITournamentDB
     {
-        bool AddTeamToTournament(string TeamID, string TournamentID);
-        bool AddUserToTournament(string UserID, string TournamentID);
-        bool CreateTournament(TournamentDTO tournamentDTO);
-        bool EditTournament(TournamentDTO tournamentDTO);
-        List<TournamentDTO> FindAllFutureTournaments();
-        List<TournamentDTO> FindAllTournaments();
-        TournamentDTO FindTournamentByID(string ID);
-        TournamentDTO FindTournamentByName(string Name);
+        string[] GetUsers(string TournamentID);
     }
 }

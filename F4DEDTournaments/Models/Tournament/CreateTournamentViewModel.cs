@@ -11,8 +11,8 @@ namespace F4DEDTournaments.Models.Tournament
     {
         [Required]
         public string Name { get; set; }
-        [Required]
         public string OrganisationID { get; set; }
+        public string UserID { get; set; }
         [Required]
         public int Size { get; set; }
         [Required]

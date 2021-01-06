@@ -1,62 +1,160 @@
 ﻿@model Logic.Teams.Team
+@using Model
 
 @{
     ViewData["Title"] = "EditTeam";
+    var Countries = Html.GetEnumSelectList<Countries>().OrderBy(a => a.ToString(), StringComparer.CurrentCultureIgnoreCase);
+    var Languages = Html.GetEnumSelectList<Languages>().OrderBy(a => a.ToString(), StringComparer.CurrentCultureIgnoreCase);
+    var Games = Html.GetEnumSelectList<Games>().OrderBy(a => a.ToString(), StringComparer.CurrentCultureIgnoreCase);
 }
 
-<h1>EditTeam</h1>
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EditTeam">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="TeamID" hidden class="form-control" />
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="~/css/Team/ViewTeam.css" rel="stylesheet" />
+<div class="container">
+    <div class="row flex-lg-nowrap">
+        <div class="col-12 col-lg-auto mb-3" style="width: 250px;">
+            <div class="card p-3">
+                <div class="e-navlist e-navlist--active-bg">
+                    <ul class="nav">
+                        <li class="nav-item"><a class="nav-link px-2 active"><i class="fa fa-fw fa-bar-chart mr-1"></i><span>Statistics (WIP)</span></a></li>
+                        <li class="nav-item"><a class="nav-link px-2 active"><i class="fa fa-fw fa-trophy mr-1" aria-hidden="true"></i>Recent matches</a></li>
+                        <li class="nav-item"><a class="nav-link px-2"><i class="fa fa-fw fa-cog mr-1"></i><span>Edit</span></a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="TeamName" class="control-label"></label>
-                <input asp-for="TeamName" class="form-control" />
-                <span asp-validation-for="TeamName" class="text-danger"></span>
+        </div>
+
+        <div class="col">
+            <div class="row">
+                <div class="col mb-3">
+                    <form asp-action="EditTeam">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="e-profile">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-auto mb-3">
+                                            <div class="mx-auto" style="width: 140px;">
+                                                <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
+                                                    <span style="color: rgb(166, 168, 170); font: bold 8pt Arial;">Placeholder</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                            <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                                <input class="pt-sm-2 pb-1 mb-0 text-nowrap form-control-sm" asp-for="TeamName" /><br />
+                                                <select class="form-control-sm" asp-for="PlayedGame" asp-items="Games"></select><br />
+
+                                                <label class="form-check-label">
+                                                    <input class="form-check-input" asp-for="IsPrivate" /> @Html.DisplayNameFor(model => model.IsPrivate)
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-content pt-3">
+                                        <div class="tab-pane active">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <div class="row mb-3">
+                                                        <div class="col">
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <label>Minimum Elo</label>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <input class="form-control-sm" asp-for="MinimumElo" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <label>Minimum Age</label>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <input class="form-control-sm" asp-for="MinimumAge" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="form-group">
+                                                                <label></label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col mb-3">
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <label>About</label>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <input class="form-control-sm" asp-for="Description" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col">
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <label>Country</label>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <select class="form-control-sm" asp-for="Country" asp-items="Countries"> </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="card">
+                                                                <div class="card-header">
+                                                                    <label>Main Language</label>
+                                                                </div>
+                                                                <div class="card-body">
+                                                                    <select class="form-control-sm" asp-for="Language" asp-items="Languages"> </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-1 mx-1">
+                                <div class="float-right">
+                                    <div>
+                                        <input class="btn btn-primary text-white" type="submit" />
+                                        <a class="btn btn-danger text-white" asp-action="ViewTeam">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input asp-for="TeamID" hidden class="form-control" />
+                    </form>
+                </div>
+
+                <div class="col-12 col-md-3 mb-3">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="px-xl-3">
+                                <b>Members:</b><br />
+                                @foreach (string Member in Model.GetMembers())
+                                {
+                                    string User = "• " + Member;
+                                    @User
+                                    <br />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="MinimumElo" class="control-label"></label>
-                <input asp-for="MinimumElo" class="form-control" />
-                <span asp-validation-for="MinimumElo" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsPrivate" /> @Html.DisplayNameFor(model => model.IsPrivate)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Country" class="control-label"></label>
-                <input asp-for="Country" class="form-control" />
-                <span asp-validation-for="Country" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Language" class="control-label"></label>
-                <input asp-for="Language" class="form-control" />
-                <span asp-validation-for="Language" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MinimumAge" class="control-label"></label>
-                <input asp-for="MinimumAge" class="form-control" />
-                <span asp-validation-for="MinimumAge" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PlayedGame" class="control-label"></label>
-                <input asp-for="PlayedGame" class="form-control" />
-                <span asp-validation-for="PlayedGame" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+        </div>
     </div>
 </div>
-

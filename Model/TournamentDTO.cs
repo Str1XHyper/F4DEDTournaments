@@ -15,6 +15,7 @@ namespace Model
         public string ID { get; set; }
         public string Name { get; set; }
         public string OrganisationID { get; set; }
+        public string UserID { get; set; }
         public int Size { get; set; }
         public int Prize { get; set; }
         public int BuyIn { get; set; }

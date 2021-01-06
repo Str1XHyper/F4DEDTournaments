@@ -38,23 +38,18 @@
                                             string StartsIn ="";
                                             if(timeleft < TimeSpan.Zero)
                                             {
-                                                StartsIn = "-";
-                                                timeleft *= -1;
+                                                StartsIn = "Waiting for players";
                                             }
-                                            StartsIn += timeleft.ToString(@"hh\:mm\:ss");
+                                            else
+                                            {
+                                                StartsIn = timeleft.ToString(@"hh\:mm\:ss");
+                                            }
                                         }
                                         Starts in: @StartsIn
                                     </div>
                                 </div>
                                 <div class="card-footer p-2">
-                                    @if (tournament.BuyIn == 0)
-                                    {
-                                        <a class="btn btn-primary text-white">Enter Tournament</a>
-                                    }
-                                    else
-                                    {
-                                        <a class="btn btn-primary text-white">Buy in</a>
-                                    }
+                                    <a class="btn btn-primary" asp-action="ViewTournament" asp-route-ID="@tournament.ID">Go to Tournament</a>
                                 </div>
                             </div>
                         </div>
