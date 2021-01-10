@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using IdGenerator;
-using DAL;
+using Interface;
 
 namespace Logic.Teams
 {
@@ -16,9 +16,14 @@ namespace Logic.Teams
 
     public class TeamManager
     {
-        ITeamCollectionDB teamManagerDB = new TeamDB();
+        ITeamCollectionDB teamManagerDB;
         Generator idGenerator = new Generator();
 
+        public TeamManager()
+        {
+            Factory factory = new Factory();
+            teamManagerDB = factory.GetTeamManagerDB("release");
+        }
 
         public TeamErrorCodes CreateTeam(TeamDTO teamDTO, string UserID)
         {

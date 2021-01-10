@@ -47,6 +47,7 @@ namespace DAL
             }
             catch
             {
+                cnn.Close();
                 return null;
             }
             cnn.Close();
@@ -78,6 +79,7 @@ namespace DAL
             }
             catch
             {
+                cnn.Close();
                 return null;
             }
             cnn.Close();

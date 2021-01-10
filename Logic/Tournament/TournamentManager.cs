@@ -20,9 +20,17 @@ namespace Logic.Tournament
     }
     public class TournamentManager
     {
-        private ITournamentManagerDB tournamentDB = new TournamentDB();
-        private IUserDB userDB = new UserDB();
+        private ITournamentManagerDB tournamentDB;
+        private IUserDB userDB;
         Generator idGenerator = new Generator();
+        
+        public TournamentManager()
+        {
+            Factory factory = new Factory();
+            tournamentDB = factory.GetTournamentManagerDB("release");
+            userDB = factory.GetUserDB("release");
+        }
+
         public TournamentManagerErrorCodes CreateTournament(TournamentDTO tournamentDTO)
         {
             if(tournamentDTO.BuyIn > 0 && (tournamentDTO.BuyIn * tournamentDTO.Size ) >= tournamentDTO.Prize)

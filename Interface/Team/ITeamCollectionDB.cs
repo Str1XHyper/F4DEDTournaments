@@ -1,7 +1,7 @@
 ﻿using Model;
 using System.Collections.Generic;
 
-namespace DAL
+namespace Interface
 {
     public interface ITeamCollectionDB
     {
