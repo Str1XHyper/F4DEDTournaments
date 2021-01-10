@@ -7,6 +7,7 @@ namespace F4DEDTournaments.Models.Tournament
 {
     public class IndexViewModel
     {
-        public List<Logic.Tournament.Tournament> Tournaments { get; set; }
+        public List<Logic.Tournament.Tournament> PlannedTournaments { get; set; }
+        public List<Logic.Tournament.Tournament> ActiveTournaments { get; set; }
     }
 }

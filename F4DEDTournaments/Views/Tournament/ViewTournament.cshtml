@@ -1,6 +1,8 @@
 ﻿@model F4DEDTournaments.Models.Tournament.ViewTournamentModel
+@using Model
 @{
     ViewData["Title"] = "ViewTournament";
+    var timeleft = Model.Tournament.StartTime - DateTime.Now;
 }
 
 
@@ -84,15 +86,21 @@
                                                             </div>
                                                             <div class="card-body">
                                                                 @{
-                                                                    var timeleft = Model.Tournament.StartTime - DateTime.Now;
                                                                     string StartsIn = "";
-                                                                    if (timeleft < TimeSpan.Zero)
+                                                                    if (Model.Tournament.Status == TourneyStatus.Planned)
                                                                     {
-                                                                        StartsIn = "Waiting for players or for the host to start the tournament";
+                                                                        if (timeleft < TimeSpan.Zero)
+                                                                        {
+                                                                            StartsIn = "Waiting for players or for the host to start the tournament";
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            StartsIn = timeleft.ToString(@"hh\:mm\:ss");
+                                                                        }
                                                                     }
                                                                     else
                                                                     {
-                                                                        StartsIn = timeleft.ToString(@"hh\:mm\:ss");
+                                                                        StartsIn = "Tournament has already started";
                                                                     }
                                                                 }
                                                                 @StartsIn
@@ -124,14 +132,44 @@
                 <div class="col-12 col-md-3 mb-3">
                     <div class="card mb-3">
                         <div class="card-body">
-                            <div class="px-xl-3">
-                                <a class="btn btn-primary" asp-action="JoinTournament">
-                                    Join
+                            @if (Model.Tournament.Status == TourneyStatus.Planned)
+                            {
+                                <div class="px-xl-3">
+                                    @if (!Model.IsOwner)
+                                    {
+                                        <a class="btn btn-primary" asp-action="JoinTournament" asp-route-tournamentId="@Model.Tournament.ID">
+                                            Join
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        if (timeleft < TimeSpan.Zero)
+                                        {
+                                            <a class="btn btn-primary" asp-action="StartTournament" asp-route-tournamentId="@Model.Tournament.ID">
+                                                Start Tournament
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-dark text-white">
+                                                Start Tournament
+                                            </a>
+                                        }
+                                    }
+                                </div>
+                                <div class="dropdown-divider">
+                                </div>
+                            }
+                            else if (Model.Tournament.Status == TourneyStatus.Active && Model.IsOwner)
+                            {
+                                <a class="btn btn-primary" asp-action="EndTournament" asp-route-tournamentId="@Model.Tournament.ID">
+                                    End Tournament
                                 </a>
-                            </div>
-                            <div class="dropdown-divider">
-                            </div>
+                                <div class="dropdown-divider">
+                                </div>
+                            }
                             <div class="px-xl-3">
+                                <b>Users:</b><br />
                                 @foreach (string User in Model.CurrentUsers)
                                 {
                                     @("• " + User);

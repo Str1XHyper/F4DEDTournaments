@@ -10,7 +10,7 @@ using DAL.User;
 
 namespace Logic.Tournament
 {
-    public enum TournamentErrorCodes
+    public enum TournamentManagerErrorCodes
     {
         UnexpectedError = -1,
         NoError = 0,
@@ -23,15 +23,15 @@ namespace Logic.Tournament
         private ITournamentManagerDB tournamentDB = new TournamentDB();
         private IUserDB userDB = new UserDB();
         Generator idGenerator = new Generator();
-        public TournamentErrorCodes CreateTournament(TournamentDTO tournamentDTO)
+        public TournamentManagerErrorCodes CreateTournament(TournamentDTO tournamentDTO)
         {
             if(tournamentDTO.BuyIn > 0 && (tournamentDTO.BuyIn * tournamentDTO.Size ) >= tournamentDTO.Prize)
             {
-                return TournamentErrorCodes.BuyInLessOrEqualToPrize;
+                return TournamentManagerErrorCodes.BuyInLessOrEqualToPrize;
             }
             if (tournamentDTO.OrganisationID == "null" && tournamentDTO.UserID == "null")
             {
-                return TournamentErrorCodes.NoHost;
+                return TournamentManagerErrorCodes.NoHost;
             }
             tournamentDTO.ID = idGenerator.GenerateID(12);
             if(tournamentDTO.OrganisationID == "null")
@@ -41,7 +41,7 @@ namespace Logic.Tournament
                 int extraCost = tournamentDTO.Prize - (tournamentDTO.BuyIn * tournamentDTO.Size);
                 if (userDB.GetCurrency(tournamentDTO.UserID) < extraCost)
                 {
-                    return TournamentErrorCodes.NotEnoughMoney;
+                    return TournamentManagerErrorCodes.NotEnoughMoney;
                 }
             } 
             else
@@ -49,7 +49,7 @@ namespace Logic.Tournament
                 tournamentDTO.UserID = null;
             }
             tournamentDB.CreateTournament(tournamentDTO);
-            return TournamentErrorCodes.NoError;
+            return TournamentManagerErrorCodes.NoError;
         }
 
         public List<Tournament> Get10NextTournaments()
@@ -73,6 +73,17 @@ namespace Logic.Tournament
         {
             Tournament tournament = new Tournament(tournamentDB.FindTournamentByID(ID));
             return tournament;
+        }
+
+        public List<Tournament> GetActiveTournaments()
+        {
+            var tournamentDTOs = tournamentDB.FindActiveTournaments();
+            List<Tournament> tournaments = new List<Tournament>();
+            foreach (TournamentDTO dto in tournamentDTOs)
+            {
+                tournaments.Add(new Tournament(dto));
+            }
+            return tournaments;
         }
     }
 }

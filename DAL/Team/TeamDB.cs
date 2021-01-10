@@ -64,8 +64,14 @@ namespace DAL
             {
                 new string[] { "@TeamID", ID},
             };
-            var result = SQLConnection.ExecuteSearchQueryParameters($"SELECT * FROM Teams Where TeamID = @TeamID", param);
-            return GenerateDTOFromRow(result[0]);
+            var result = SQLConnection.ExecuteSearchQueryParameters($"SELECT * FROM Teams WHERE TeamID = @TeamID", param);
+            if(result.Count != 0)
+            {
+                return GenerateDTOFromRow(result[0]);
+            } else
+            {
+                return null;
+            }
         }
         public List<TeamDTO> FindAllTeams()
         {
@@ -78,7 +84,7 @@ namespace DAL
             {
                 new string[] { "@UserID", userID},
             };
-            var TeamID = SQLConnection.ExecuteSearchQueryParameters("SELECT TeamID FROM UserTeams Where UserID = @UserID", param);
+            var TeamID = SQLConnection.ExecuteSearchQueryParameters("SELECT TeamID FROM UserTeams WHERE UserID = @UserID", param);
             if(TeamID.Count == 0)
             {
                 return null;
@@ -102,7 +108,6 @@ namespace DAL
 
         private TeamDTO GenerateDTOFromRow(string[] row)
         {
-
             TeamDTO teamDTO = new TeamDTO()
             {
                 TeamID = row[0],
@@ -123,18 +128,7 @@ namespace DAL
             List<TeamDTO> teamList = new List<TeamDTO>();
             foreach (string[] row in rows)
             {
-                teamList.Add(new TeamDTO()
-                {
-                    TeamID = row[0],
-                    TeamName = row[1],
-                    MinimumElo = Convert.ToInt32(row[2]),
-                    IsPrivate = Convert.ToBoolean(row[3]),
-                    Description = row[4],
-                    Country = (Countries)Convert.ToInt32(row[5]),
-                    Language = (Languages)Convert.ToInt32(row[6]),
-                    MinimumAge = Convert.ToInt32(row[7]),
-                    PlayedGame = (Games)Convert.ToInt32(row[8])
-                });
+                teamList.Add(GenerateDTOFromRow(row));
             }
 
             return teamList;
@@ -148,7 +142,7 @@ namespace DAL
                 new string[] { "@TeamID", TeamID},
                 new string[] { "@Role", Role.ToString()},
             };
-            var result = SQLConnection.ExecuteNonSearchQueryParameters($"INSERT INTO UserTeams (UserID,TeamID,Role) VALUES (@PlayerID,@TeamID,@Role)", param);
+            var result = SQLConnection.ExecuteNonSearchQueryParameters("INSERT INTO UserTeams (UserID,TeamID,Role) VALUES (@PlayerID,@TeamID,@Role)", param);
             return result;
         }
 

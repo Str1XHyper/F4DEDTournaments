@@ -30,7 +30,7 @@ namespace F4DEDTournaments.Controllers
         public async Task<IActionResult> CreateTeam(CreateTeamViewModel model)
         {
             var currentUser = await userManager.GetUserAsync(User);
-
+            
             TeamDTO teamDTO = new TeamDTO()
             {
                 TeamName = model.TeamName,
@@ -137,9 +137,9 @@ namespace F4DEDTournaments.Controllers
 
 
         [HttpPost]
-        public IActionResult EditTeam(Team model)
+        public IActionResult EditTeam(Team team)
         {
-            model.UpdateTeam();
+            team.UpdateTeam();
             return RedirectToAction("ViewTeam");
         }
     }

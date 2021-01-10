@@ -35,5 +35,12 @@ namespace Logic.Organisation
             }
             return OrganisationErrorCodes.NoError;
         }
+
+        public List<OrganisationDTO> GetAllOrganisations() => organisationDB.getAllOrganisations();
+
+        public string CreateHostLink(string organisationID)
+        {
+            return $"https://f4dedtournaments-dev-as.azurewebsites.net/Tournament/CreateTournament?OrganisationID={organisationID}";
+        }
     }
 }

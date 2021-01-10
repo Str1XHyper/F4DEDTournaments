@@ -9,6 +9,7 @@ using Logic.Tournament;
 using Logic.Organisation;
 using Microsoft.AspNetCore.Identity;
 using F4DEDTournaments.Models;
+using Logic.Teams;
 
 namespace F4DEDTournaments.Controllers
 {
@@ -17,6 +18,7 @@ namespace F4DEDTournaments.Controllers
         private readonly UserManager<AppUser> userManager;
         TournamentManager tournamentManager = new TournamentManager();
         OrganisationManager organisationManager = new OrganisationManager();
+        TeamManager teamManager = new TeamManager();
 
 
         public TournamentController(UserManager<AppUser> userManager)
@@ -62,7 +64,8 @@ namespace F4DEDTournaments.Controllers
                 Prize = model.Prize,
                 BuyIn = model.BuyIn,
                 Game = model.Game,
-                StartTime = model.StartTime
+                StartTime = model.StartTime,
+                TeamSize = model.TeamSize
             };
             var result = tournamentManager.CreateTournament(tournamentDTO);
 
@@ -71,27 +74,29 @@ namespace F4DEDTournaments.Controllers
             ViewData["UserName"] = currentUser.UserName;
             switch (result)
             {
-                case TournamentErrorCodes.NoError:
+                case TournamentManagerErrorCodes.NoError:
                     return RedirectToAction("Index");
-                case TournamentErrorCodes.BuyInLessOrEqualToPrize:
+                case TournamentManagerErrorCodes.BuyInLessOrEqualToPrize:
                     ModelState.AddModelError("BuyIn", "Buy In can't be less or equal to prize!");
                     return View(model);
-                case TournamentErrorCodes.NoHost:
+                case TournamentManagerErrorCodes.NoHost:
                     return RedirectToAction("Error", "Home", new { errorMessage = "There was no Host assigned to the tournament!", errorDate = DateTime.Now });
-                case TournamentErrorCodes.NotEnoughMoney:
+                case TournamentManagerErrorCodes.NotEnoughMoney:
                     ModelState.AddModelError("Prize", "You don't have enough currency to create a tournament with such a prize pool!");
                     return View(model);
-                case TournamentErrorCodes.UnexpectedError:
+                case TournamentManagerErrorCodes.UnexpectedError:
                 default:
                     return RedirectToAction("Error", "Home", new { errorMessage = "An Unknown error occured while creating a tournament", errorDate = DateTime.Now });
             }
         }
         public IActionResult Index()
         {
-            var Tournaments = tournamentManager.Get10NextTournaments();
+            var Next10 = tournamentManager.Get10NextTournaments();
+            var Active = tournamentManager.GetActiveTournaments();
             IndexViewModel model = new IndexViewModel()
             {
-                Tournaments = Tournaments
+                PlannedTournaments = Next10,
+                ActiveTournaments = Active
             };
             return View(model);
         }
@@ -111,6 +116,83 @@ namespace F4DEDTournaments.Controllers
                 return RedirectToAction("Index");
             }
             return View(model);
+        }
+
+        public async Task<IActionResult> JoinTournament(string tournamentID)
+        {
+            var tournament = tournamentManager.GetTournamentById(tournamentID);
+            var currentUser = await userManager.GetUserAsync(User);
+            TournamentErrorCode result = TournamentErrorCode.UnknownError;
+            switch (tournament.TeamSize)
+            {
+                case 1:
+                    result = tournament.AddUser(currentUser.Id);
+                    break;
+                case 2:
+                    result = TournamentErrorCode.UnknownError;
+                    //Invite player screen
+                    break;
+                case 5:
+                    var Team = teamManager.GetTeamByUser(currentUser.Id);
+                    if(Team != null)
+                    {
+                        result = tournament.AddTeam(Team.TeamID);
+                    }
+                    break;
+                default:
+                    result = TournamentErrorCode.UnknownError;
+                    break;
+            }
+
+            switch (result)
+            {
+                case TournamentErrorCode.NoError:
+                    return RedirectToAction("ViewTournament", new {tournament.ID});
+                case TournamentErrorCode.CouldntAddUserToTournament:
+                    return RedirectToAction("Error", "Home", new { errorMessage = "An user couldn't get added for unknown reason", errorDate = DateTime.Now });
+                case TournamentErrorCode.CouldntAddTeamToTournament:
+                    return RedirectToAction("Error", "Home", new { errorMessage = "A team couldn't get added for unknown reason", errorDate = DateTime.Now });
+                case TournamentErrorCode.UnknownError:
+                default:
+                    return RedirectToAction("Error", "Home", new { errorMessage = "An unknown error occured", errorDate = DateTime.Now });
+            }
+        }
+
+        public IActionResult StartTournament(string tournamentID)
+        {
+            var tournament = tournamentManager.GetTournamentById(tournamentID);
+            //var currentUser = await userManager.GetUserAsync(User);
+
+            var result = tournament.Start();
+
+            switch (result)
+            {
+                case TournamentErrorCode.NoError:
+                    return RedirectToAction("ViewTournament", new { tournament.ID });
+                case TournamentErrorCode.CouldntUpdate:
+                    return RedirectToAction("Error", "Home", new { errorMessage = "The Tournament couldn't start", errorDate = DateTime.Now });
+                case TournamentErrorCode.UnknownError:
+                default:
+                    return RedirectToAction("Error", "Home", new { errorMessage = "An unknown error occured", errorDate = DateTime.Now });
+            }
+        }
+        public IActionResult EndTournament(string tournamentID)
+        {
+            var tournament = tournamentManager.GetTournamentById(tournamentID);
+            //var currentUser = await userManager.GetUserAsync(User);
+
+            var result = tournament.End();
+
+            switch (result)
+            {
+                case TournamentErrorCode.NoError:
+                    return RedirectToAction("Index");
+                case TournamentErrorCode.CouldntUpdate:
+                    return RedirectToAction("Error", "Home", new { errorMessage = "The Tournament couldn't end", errorDate = DateTime.Now });
+                case TournamentErrorCode.UnknownError:
+                default:
+                    return RedirectToAction("Error", "Home", new { errorMessage = "An unknown error occured", errorDate = DateTime.Now });
+            }
         }
     }
 }

@@ -9,23 +9,23 @@
                 Future tournaments
             </div>
             <div class="card-body" style="height:100%">
-                @if (Model.Tournaments.Count > 0)
+                @if (Model.PlannedTournaments.Count > 0)
                 {
-                    foreach (var tournament in Model.Tournaments)
+                    foreach (var plannedTournament in Model.PlannedTournaments)
                     {
                         <div class="pb-2">
                             <div class="card">
                                 <div class="card-header p-2">
-                                    <b>@tournament.Name</b>
+                                    <b>@plannedTournament.Name</b>
                                 </div>
                                 <div class="card-body  p-2">
                                     <div class="col">
-                                        <a>Prize pool: @tournament.Prize Tokens</a>
+                                        <a>Prize pool: @plannedTournament.Prize Tokens</a>
                                     </div>
                                     <div class="col">
-                                        @if (tournament.BuyIn > 0)
+                                        @if (plannedTournament.BuyIn > 0)
                                         {
-                                            <a>Buy in: @tournament.BuyIn Tokens</a>
+                                            <a>Buy in: @plannedTournament.BuyIn Tokens</a>
                                         }
                                         else
                                         {
@@ -33,10 +33,10 @@
                                         }
                                     </div>
                                     <div class="col">
-                                        @{ 
-                                            var timeleft = tournament.StartTime - DateTime.Now;
-                                            string StartsIn ="";
-                                            if(timeleft < TimeSpan.Zero)
+                                        @{
+                                            var timeleft = plannedTournament.StartTime - DateTime.Now;
+                                            string StartsIn = "";
+                                            if (timeleft < TimeSpan.Zero)
                                             {
                                                 StartsIn = "Waiting for players";
                                             }
@@ -49,7 +49,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer p-2">
-                                    <a class="btn btn-primary" asp-action="ViewTournament" asp-route-ID="@tournament.ID">Go to Tournament</a>
+                                    <a class="btn btn-primary" asp-action="ViewTournament" asp-route-ID="@plannedTournament.ID">Go to Tournament</a>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +80,17 @@
                     Active
                 </div>
                 <div class="card-body">
-                    Active Tournaments
+                    @if (Model.ActiveTournaments.Count > 0)
+                    {
+                        foreach (Logic.Tournament.Tournament ActiveTournament in Model.ActiveTournaments)
+                        {
+                            <div>@ActiveTournament.Name | <a class="btn-sm btn-primary" asp-action="ViewTournament" asp-route-ID="@ActiveTournament.ID">View</a></div>
+                        }
+                    }
+                    else
+                    {
+                        <div>There are no active tournaments right now</div>
+                    }
                 </div>
             </div>
         </div>

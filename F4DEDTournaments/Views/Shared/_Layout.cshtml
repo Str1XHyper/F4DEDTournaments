@@ -40,6 +40,18 @@
                                 <a class="nav-link text-light" asp-area="" asp-controller="Admin" asp-action="ListRoles">Roles</a>
                             </li>
                         }
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-light dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Organisation
+                                </a>
+                                <div class="dropdown-menu bg-dark text-light" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item text-light" asp-area="" asp-controller="Organisation" asp-action="CreateOrg">Register organisation</a>
+                                    <a class="dropdown-item text-light" asp-area="" asp-controller="Organisation" asp-action="CreateTournamentHostLink">Create Tournament Link</a>
+                                </div>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

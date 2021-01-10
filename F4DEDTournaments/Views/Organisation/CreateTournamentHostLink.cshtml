@@ -1,0 +1,36 @@
+﻿@model F4DEDTournaments.Models.Organisation.CreateHostLinkViewModel
+@using Model
+@{
+    ViewData["Title"] = "Create Host Link";
+    string HostLink = ViewData["HostLink"].ToString();
+}
+
+@if (HostLink == "null")
+{
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post">
+                <div class="form-group">
+                    <label>Choose an organisation:</label>
+                    <select asp-for="OrganisationID" class="form-control">
+                        @foreach (OrganisationDTO organisation in Model.Organisations)
+                        {
+                            <option value="@organisation.ID">@organisation.Name</option>
+                        }
+                    </select>
+                </div>
+                <input type="submit" value="Create link"/>
+            </form>
+        </div>
+    </div>
+} else
+{
+<div class="card">
+    <div class="card-header">
+        Host Link
+    </div>
+    <div class="card-body">
+        @HostLink
+    </div>
+</div>
+}

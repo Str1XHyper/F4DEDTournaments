@@ -22,8 +22,9 @@ namespace DAL.Tournament
                 new string[] {"@DateTime", tournamentDTO.StartTime.ToString("yyyy-MM-dd HH:mm:ss") },
                 new string[] {"@Status", ((int)tournamentDTO.Status).ToString()},
                 new string[] {"@TeamSize", tournamentDTO.TeamSize.ToString()},
+                new string[] {"@UserID", tournamentDTO.UserID},
             };
-            return SQLConnection.ExecuteNonSearchQueryParameters($"INSERT INTO Tournament (ID,Name,OrganisationID,Size,Prize,BuyIn,Game,StartTime,Status,TeamSize) VALUES (@ID, @Name,@OrganisationID,@Size,@Prize,@BuyIn,@Game,@DateTime,@Status,@TeamSize);", param);
+            return SQLConnection.ExecuteNonSearchQueryParameters($"INSERT INTO Tournament (ID,Name,OrganisationID,Size,Prize,BuyIn,Game,StartTime,Status,TeamSize,UserID) VALUES (@ID, @Name,@OrganisationID,@Size,@Prize,@BuyIn,@Game,@DateTime,@Status,@TeamSize,@UserID);", param);
         }
 
         public bool EditTournament(TournamentDTO tournamentDTO)
@@ -32,15 +33,15 @@ namespace DAL.Tournament
             {
                 new string[] {"@ID", tournamentDTO.ID},
                 new string[] {"@Name", tournamentDTO.Name},
-                new string[] {"@OrganisationID", tournamentDTO.OrganisationID},
                 new string[] {"@Size", tournamentDTO.Size.ToString()},
                 new string[] {"@Prize", tournamentDTO.Prize.ToString()},
                 new string[] {"@BuyIn", tournamentDTO.BuyIn.ToString()},
                 new string[] {"@Game", ((int)tournamentDTO.Game).ToString() },
                 new string[] {"@StartTime", tournamentDTO.StartTime.ToString("YYYY-MM-DD HH:mm:ss") },
+                new string[] {"@Status", ((int)tournamentDTO.Status).ToString()},
                 new string[] {"@TeamSize", tournamentDTO.TeamSize.ToString()},
             };
-            return SQLConnection.ExecuteNonSearchQueryParameters($"UPDATE Tournament SET `Name` = @Name, `OrganisationID` = @OrganisationID, `Size` = @Size, `Prize` = @Prize, `BuyIn` = @BuyIn, `Game` = @Game, `TeamSize` = @TeamSize WHERE ID= @ID", param);
+            return SQLConnection.ExecuteNonSearchQueryParameters($"UPDATE Tournament SET `Name` = @Name, `Size` = @Size, `Prize` = @Prize, `BuyIn` = @BuyIn, `Game` = @Game, `TeamSize` = @TeamSize, `Status` = @Status WHERE `ID` = @ID", param);
         }
         public TournamentDTO FindTournamentByName(string Name)
         {
@@ -157,6 +158,12 @@ namespace DAL.Tournament
                 Users[i] = result[i][0];
             }
             return Users;
+        }
+
+        public List<TournamentDTO> FindActiveTournaments()
+        {
+            var result = SQLConnection.ExecuteSearchQuery("SELECT * FROM Tournament WHERE Status = '1'");
+            return GenerateDTOsFromRows(result);
         }
     }
 }
