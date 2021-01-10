@@ -1,5 +1,6 @@
 ﻿using DAL.Organisation;
 using IdGenerator;
+using Interface.Organisation;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Logic.Organisation
     }
     public class OrganisationManager
     {
-        OrganisationDB organisationDB = new OrganisationDB();
+        IOrganisationManagerDB organisationDB = OrganisationFactory.GetOrganisationManagerDB("release");
         Generator idGenerator = new Generator();
 
         public OrganisationDTO GetOrganisationByID(string ID) => organisationDB.FindOrganisationByID(ID);

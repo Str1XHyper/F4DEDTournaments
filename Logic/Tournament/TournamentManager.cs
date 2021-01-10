@@ -7,6 +7,7 @@ using IdGenerator;
 using Interface.Tournament;
 using Interface.User;
 using DAL.User;
+using Logic.User;
 
 namespace Logic.Tournament
 {
@@ -20,16 +21,10 @@ namespace Logic.Tournament
     }
     public class TournamentManager
     {
-        private ITournamentManagerDB tournamentDB;
-        private IUserDB userDB;
+        private ITournamentManagerDB tournamentDB = TournamentFactory.GetTournamentManagerDB("release");
+        private IUserDB userDB = UserFactory.GetUserDB("release");
         Generator idGenerator = new Generator();
         
-        public TournamentManager()
-        {
-            Factory factory = new Factory();
-            tournamentDB = factory.GetTournamentManagerDB("release");
-            userDB = factory.GetUserDB("release");
-        }
 
         public TournamentManagerErrorCodes CreateTournament(TournamentDTO tournamentDTO)
         {

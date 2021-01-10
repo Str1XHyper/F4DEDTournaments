@@ -17,7 +17,7 @@ namespace Logic.Tournament
     }
     public class Tournament
     {
-        private ITournamentDB tournamentDB;
+        private ITournamentDB tournamentDB = TournamentFactory.GetTournamentDB("release");
         public string ID { get; set; }
         public string Name { get; set; }
         public string OrganisationID { get; set; }
@@ -43,14 +43,9 @@ namespace Logic.Tournament
             StartTime = tournamentDTO.StartTime;
             Status = tournamentDTO.Status;
             TeamSize = tournamentDTO.TeamSize;
-
-            Factory factory = new Factory();
-            tournamentDB = factory.GetTournamentDB("release");
         }
         public Tournament()
         {
-            Factory factory = new Factory();
-            tournamentDB = factory.GetTournamentDB("release");
         }
 
         public string[] GetUsers() => tournamentDB.GetUsers(ID);

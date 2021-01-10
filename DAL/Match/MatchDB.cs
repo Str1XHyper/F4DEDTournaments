@@ -1,11 +1,12 @@
-﻿using Model;
+﻿using Interface.Match;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace DAL.Match
 {
-    public class MatchDB
+    public class MatchDB : IMatchManagerDB
     {
         public bool CreateMatch(MatchDTO matchDTO)
         {

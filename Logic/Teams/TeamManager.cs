@@ -16,14 +16,8 @@ namespace Logic.Teams
 
     public class TeamManager
     {
-        ITeamCollectionDB teamManagerDB;
+        ITeamCollectionDB teamManagerDB = TeamFactory.GetTeamManagerDB("release");
         Generator idGenerator = new Generator();
-
-        public TeamManager()
-        {
-            Factory factory = new Factory();
-            teamManagerDB = factory.GetTeamManagerDB("release");
-        }
 
         public TeamErrorCodes CreateTeam(TeamDTO teamDTO, string UserID)
         {

@@ -1,5 +1,6 @@
 ﻿using DAL.Match;
 using IdGenerator;
+using Interface.Match;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,12 @@ namespace Logic.Match
     }
     public class MatchManager
     {
-        MatchDB matchDB = new MatchDB();
-        Generator generator = new Generator();
+        IMatchManagerDB matchDB = MatchFactory.GetMatchDB("release");
+        Generator idGenerator = new Generator();
 
         public MatchErrorCodes CreateMatch(MatchDTO matchDTO)
         {
-            matchDTO.ID = generator.GenerateID(12);
+            matchDTO.ID = idGenerator.GenerateID(12);
             var result = matchDB.CreateMatch(matchDTO);
             if(result == false)
             {

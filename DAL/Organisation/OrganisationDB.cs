@@ -1,11 +1,12 @@
-﻿using Model;
+﻿using Interface.Organisation;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace DAL.Organisation
 {
-    public class OrganisationDB
+    public class OrganisationDB : IOrganisationManagerDB, IOrganisationDB
     {
         public bool CreateOrganisation(OrganisationDTO organisationDTO)
         {
@@ -67,7 +68,7 @@ namespace DAL.Organisation
                 ID = row[0],
                 Name = row[1],
                 Description = row[2],
-                CountryOfOrigin = (Countries) (Convert.ToInt32(row[3]))
+                CountryOfOrigin = (Countries)(Convert.ToInt32(row[3]))
             };
             return organisationDTO;
         }

@@ -9,7 +9,7 @@ namespace Logic.Teams
 {
     public class Team
     {
-        ITeamDB teamDB;
+        ITeamDB teamDB = TeamFactory.GetTeamDB("release");
         EmailManager emailManager = new EmailManager();
 
         public string TeamID { get; set; }
@@ -24,7 +24,6 @@ namespace Logic.Teams
 
         public Team(TeamDTO teamDTO)
         {
-            Factory factory = new Factory();
 
             TeamID = teamDTO.TeamID;
             TeamName = teamDTO.TeamName;
@@ -35,14 +34,11 @@ namespace Logic.Teams
             Country = teamDTO.Country;
             Language = teamDTO.Language;
             PlayedGame = teamDTO.PlayedGame;
-
-            teamDB = factory.GetTeamDB("Test");
         }
 
         public Team()
         {
-            Factory factory = new Factory();
-            teamDB = factory.GetTeamDB("Test");
+
         }
 
         public List<TeamMatchResultDTO> GetResults() => teamDB.GetPreviousResults(this.TeamID);

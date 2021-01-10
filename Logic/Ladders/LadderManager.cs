@@ -1,5 +1,5 @@
-﻿using DAL.Ladder;
-using IdGenerator;
+﻿using IdGenerator;
+using Interface.Ladder;
 using Model;
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ namespace Logic.Ladders
     }
     public class LadderManager
     {
-        LadderDB ladderDB = new LadderDB();
+        ILadderManagerDB ladderDB = LadderFactory.GetLadderManagerDB("release");
         Generator generator = new Generator();
 
         public LadderErrorCodes CreateLadder(LadderDTO ladderDTO)

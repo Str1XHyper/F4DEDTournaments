@@ -1,11 +1,12 @@
-﻿using Model;
+﻿using Interface.Ladder;
+using Model;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace DAL.Ladder
 {
-    public class LadderDB
+    public class LadderDB : ILadderManagerDB, ILadderDB
     {
         public bool CreateLadder(LadderDTO ladderDTO)
         {
@@ -78,14 +79,7 @@ namespace DAL.Ladder
             List<LadderDTO> ladderList = new List<LadderDTO>();
             foreach (string[] row in rows)
             {
-                ladderList.Add(new LadderDTO()
-                {
-                    ID = row[0],
-                    Name = row[1],
-                    MinimumElo = Convert.ToInt32(row[2]),
-                    MaximumElo = Convert.ToInt32(row[3]),
-                    Game = (Games)Convert.ToInt32(row[4])
-                });
+                ladderList.Add(GenerateDTOFromRow(row));
             }
             return ladderList;
         }
