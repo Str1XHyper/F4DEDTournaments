@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using DAL;
+using DalFactory;
 using Interface;
 using Model;
 

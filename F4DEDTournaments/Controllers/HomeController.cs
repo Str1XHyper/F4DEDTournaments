@@ -23,11 +23,6 @@ namespace F4DEDTournaments.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
         public IActionResult Error(string errorMessage, DateTime errorDate)
         {
             ViewData["ErrorMessage"] = errorMessage;

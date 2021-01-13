@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Logic.Ladders
+namespace DalFactory
 {
     public static class LadderFactory
     {
@@ -19,7 +19,7 @@ namespace Logic.Ladders
             }
         }
 
-        internal static ILadderManagerDB GetLadderManagerDB(string source)
+        public static ILadderManagerDB GetLadderManagerDB(string source)
         {
             switch (source.ToLower())
             {

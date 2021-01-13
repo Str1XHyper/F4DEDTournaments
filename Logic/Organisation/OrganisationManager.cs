@@ -1,4 +1,5 @@
 ﻿using DAL.Organisation;
+using DalFactory;
 using IdGenerator;
 using Interface.Organisation;
 using Model;

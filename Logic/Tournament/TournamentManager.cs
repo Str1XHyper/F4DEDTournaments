@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Text;
 using Model;
-using DAL.Tournament;
 using IdGenerator;
 using Interface.Tournament;
 using Interface.User;
-using DAL.User;
-using Logic.User;
+using DalFactory;
 
 namespace Logic.Tournament
 {
@@ -15,7 +13,7 @@ namespace Logic.Tournament
     {
         UnexpectedError = -1,
         NoError = 0,
-        BuyInLessOrEqualToPrize = 1,
+        BuyInMoreOrEqualToPrize = 1,
         NoHost = 2,
         NotEnoughMoney = 3,
     }
@@ -24,13 +22,22 @@ namespace Logic.Tournament
         private ITournamentManagerDB tournamentDB = TournamentFactory.GetTournamentManagerDB("release");
         private IUserDB userDB = UserFactory.GetUserDB("release");
         Generator idGenerator = new Generator();
-        
+
+        public TournamentManager(string DataSource)
+        {
+            tournamentDB = TournamentFactory.GetTournamentManagerDB(DataSource);
+            userDB = UserFactory.GetUserDB(DataSource);
+        }
+        public TournamentManager()
+        {
+
+        }
 
         public TournamentManagerErrorCodes CreateTournament(TournamentDTO tournamentDTO)
         {
             if(tournamentDTO.BuyIn > 0 && (tournamentDTO.BuyIn * tournamentDTO.Size ) >= tournamentDTO.Prize)
             {
-                return TournamentManagerErrorCodes.BuyInLessOrEqualToPrize;
+                return TournamentManagerErrorCodes.BuyInMoreOrEqualToPrize;
             }
             if (tournamentDTO.OrganisationID == "null" && tournamentDTO.UserID == "null")
             {

@@ -1,19 +1,20 @@
-﻿using DAL.User;
-using Interface.User;
+﻿using DAL.Match;
+using Interface.Match;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Logic.User
+namespace DalFactory
 {
-    public static class UserFactory
+    public static class MatchFactory
     {
-        public static IUserDB GetUserDB(string source)
+        public static IMatchManagerDB GetMatchDB(string source)
         {
+
             switch (source.ToLower())
             {
                 case "release":
-                    return new UserDB();
+                    return new MatchDB();
                 default:
                     throw new NotImplementedException();
             }

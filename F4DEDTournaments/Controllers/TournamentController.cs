@@ -76,7 +76,7 @@ namespace F4DEDTournaments.Controllers
             {
                 case TournamentManagerErrorCodes.NoError:
                     return RedirectToAction("Index");
-                case TournamentManagerErrorCodes.BuyInLessOrEqualToPrize:
+                case TournamentManagerErrorCodes.BuyInMoreOrEqualToPrize:
                     ModelState.AddModelError("BuyIn", "Buy In can't be less or equal to prize!");
                     return View(model);
                 case TournamentManagerErrorCodes.NoHost:

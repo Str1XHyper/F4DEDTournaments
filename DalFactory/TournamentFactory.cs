@@ -3,8 +3,9 @@ using Interface.Tournament;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TestDAL.Tournament;
 
-namespace Logic.Tournament
+namespace DalFactory
 {
     public static class TournamentFactory
     {
@@ -25,6 +26,8 @@ namespace Logic.Tournament
             {
                 case "release":
                     return new TournamentDB();
+                case "test":
+                    return new TestTournamentDB();
                 default:
                     throw new NotImplementedException();
             }

@@ -1,35 +1,29 @@
-﻿using DAL;
-using Interface;
+﻿using DAL.Organisation;
+using Interface.Organisation;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TestDAL.Team;
 
-namespace Logic.Teams
+namespace DalFactory
 {
-    public static class TeamFactory
+    public static class OrganisationFactory
     {
-        public static ITeamDB GetTeamDB(string source)
+        public static IOrganisationDB GetOrganisationDB(string source)
         {
             switch (source.ToLower())
             {
                 case "release":
-                    return new TeamDB();
-                case "test":
-                    return new TestTeamDB();
+                    return new OrganisationDB();
                 default:
                     throw new NotImplementedException();
             }
         }
-
-        public static ITeamCollectionDB GetTeamManagerDB(string source)
+        public static IOrganisationManagerDB GetOrganisationManagerDB(string source)
         {
             switch (source.ToLower())
             {
                 case "release":
-                    return new TeamDB();
-                case "test":
-                    return new TestTeamDB();
+                    return new OrganisationDB();
                 default:
                     throw new NotImplementedException();
             }

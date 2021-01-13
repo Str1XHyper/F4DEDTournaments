@@ -1,4 +1,5 @@
-﻿using IdGenerator;
+﻿using DalFactory;
+using IdGenerator;
 using Interface.Ladder;
 using Model;
 using System;

@@ -1,4 +1,5 @@
 ﻿using DAL.Tournament;
+using DalFactory;
 using Interface.Tournament;
 using Model;
 using System;
