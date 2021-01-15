@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Model;
 
-namespace F4DEDTournamentTests.Tournament
+namespace F4DEDTournamentTests.Tournaments
 {
     [TestClass()]
     public class TournamentManagerTests
@@ -141,6 +141,71 @@ namespace F4DEDTournamentTests.Tournament
 
             //Assert
             Assert.AreEqual(TournamentManagerErrorCodes.NotEnoughMoney, result);
+        }
+
+        [TestMethod()]
+        public void Get10NextTournaments_Successfull()
+        {
+            //Arrange
+            TournamentManager tournament = new TournamentManager("Test");
+
+            //Act
+            var result = tournament.Get10NextTournaments();
+
+            //Assert
+            Assert.IsTrue(result.Count <= 10);
+        }
+
+        [TestMethod()]
+        public void GetTournamentByID_Successfull()
+        {
+            //Arrange
+            TournamentManager tournament = new TournamentManager("Test");
+
+            //Act
+            var result = tournament.GetTournamentById("1");
+
+            //Assert
+            Assert.AreEqual("1", result.ID);
+        }
+
+        [TestMethod()]
+        public void GetTournamentByID_EmptyString()
+        {
+            //Arrange
+            TournamentManager tournament = new TournamentManager("Test");
+
+            //Act
+            var result = tournament.GetTournamentById("");
+
+            //Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod()]
+        public void GetTournamentByID_InputNull()
+        {
+            //Arrange
+            TournamentManager tournament = new TournamentManager("Test");
+
+            //Act
+            var result = tournament.GetTournamentById(null);
+
+            //Assert
+            Assert.IsNull(result);
+        }
+
+        [TestMethod()]
+        public void GetActiveTournaments_Successfull()
+        {
+            //Arrange
+            TournamentManager tournament = new TournamentManager("Test");
+
+            //Act
+            var result = tournament.GetActiveTournaments();
+
+            //Assert
+            Assert.AreEqual(TourneyStatus.Active, result[0].Status);
         }
     }
 }

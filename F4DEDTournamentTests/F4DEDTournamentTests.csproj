@@ -49,8 +49,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Teams\TeamManagerTests.cs" />
+    <Compile Include="Teams\TeamTests.cs" />
     <Compile Include="Tournament\TournamentManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tournament\TournamentTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

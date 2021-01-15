@@ -81,6 +81,10 @@ namespace Logic.Tournament
 
         public Tournament GetTournamentById(string ID)
         {
+            if(ID == string.Empty || ID== null)
+            {
+                return null;
+            }
             Tournament tournament = new Tournament(tournamentDB.FindTournamentByID(ID));
             return tournament;
         }

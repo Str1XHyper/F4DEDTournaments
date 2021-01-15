@@ -15,6 +15,8 @@ namespace DalFactory
             {
                 case "release":
                     return new TournamentDB();
+                case "test":
+                    return new TestTournamentDB();
                 default:
                     throw new NotImplementedException();
             }

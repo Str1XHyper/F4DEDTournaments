@@ -10,12 +10,12 @@ namespace TestDAL.Tournament
     {
         public bool AddTeamToTournament(string TeamID, string TournamentID)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool AddUserToTournament(string UserID, string TournamentID)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool CreateTournament(TournamentDTO tournamentDTO)
@@ -25,7 +25,7 @@ namespace TestDAL.Tournament
 
         public bool EditTournament(TournamentDTO tournamentDTO)
         {
-            throw new NotImplementedException();
+            return true;
         }
 
         public List<TournamentDTO> FindActiveTournaments()
@@ -148,7 +148,12 @@ namespace TestDAL.Tournament
 
         public string[] GetUsers(string TournamentID)
         {
-            throw new NotImplementedException();
+            return new string[]
+            {
+                "Tijn",
+                "Danillo",
+                "Luuk"
+            };
         }
     }
 }

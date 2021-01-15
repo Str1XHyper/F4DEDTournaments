@@ -73,18 +73,22 @@ namespace TestDAL.Team
 
         public TeamDTO FindTeamByName(string Name)
         {
-            return new TeamDTO()
+            if(Name == "A Used Name")
             {
-                IsPrivate = false,
-                TeamID = "1234asdf",
-                Country = Countries.Belgium,
-                MinimumAge = 16,
-                TeamName = Name,
-                Description = "Een belgisch test team",
-                Language = Languages.Dutch,
-                MinimumElo = 1000,
-                PlayedGame = Games.CallOfDuty
-            };
+                return new TeamDTO()
+                {
+                    IsPrivate = false,
+                    TeamID = "1234asdf",
+                    Country = Countries.Belgium,
+                    MinimumAge = 16,
+                    TeamName = "A Used Name",
+                    Description = "Een belgisch test team",
+                    Language = Languages.Dutch,
+                    MinimumElo = 1000,
+                    PlayedGame = Games.CallOfDuty
+                };
+            }
+            return null;
         }
 
         public TeamDTO FindTeamByUser(string userID)

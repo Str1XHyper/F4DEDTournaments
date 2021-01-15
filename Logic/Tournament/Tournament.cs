@@ -45,6 +45,22 @@ namespace Logic.Tournament
             Status = tournamentDTO.Status;
             TeamSize = tournamentDTO.TeamSize;
         }
+
+        public Tournament(TournamentDTO tournamentDTO, string source)
+        {
+            ID = tournamentDTO.ID;
+            Name = tournamentDTO.Name;
+            OrganisationID = tournamentDTO.OrganisationID;
+            UserID = tournamentDTO.UserID;
+            Size = tournamentDTO.Size;
+            Prize = tournamentDTO.Prize;
+            BuyIn = tournamentDTO.BuyIn;
+            Game = tournamentDTO.Game;
+            StartTime = tournamentDTO.StartTime;
+            Status = tournamentDTO.Status;
+            TeamSize = tournamentDTO.TeamSize;
+            tournamentDB = TournamentFactory.GetTournamentDB(source);
+        }
         public Tournament()
         {
         }
@@ -53,7 +69,11 @@ namespace Logic.Tournament
 
         public TournamentErrorCode AddUser(string UserId)
         {
-            var result = tournamentDB.AddUserToTournament(UserId, this.ID);
+            if (UserId == string.Empty || UserId == null)
+            {
+                return TournamentErrorCode.CouldntAddUserToTournament;
+            }
+                var result = tournamentDB.AddUserToTournament(UserId, this.ID);
             if (result)
             {
                 return TournamentErrorCode.NoError;
@@ -66,6 +86,10 @@ namespace Logic.Tournament
 
         public TournamentErrorCode AddTeam(string teamID)
         {
+            if (teamID == string.Empty || teamID == null)
+            {
+                return TournamentErrorCode.CouldntAddTeamToTournament;
+            }
             var result = tournamentDB.AddTeamToTournament(teamID, this.ID);
             if (result)
             {

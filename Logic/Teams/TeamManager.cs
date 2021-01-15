@@ -19,6 +19,20 @@ namespace Logic.Teams
     {
         ITeamCollectionDB teamManagerDB = TeamFactory.GetTeamManagerDB("release");
         Generator idGenerator = new Generator();
+        private string source;
+
+        public TeamManager(string source)
+        {
+            this.source = source;
+            teamManagerDB = TeamFactory.GetTeamManagerDB(source);
+        }
+
+        public TeamManager()
+        {
+            source = "release";
+            teamManagerDB = TeamFactory.GetTeamManagerDB("release");
+        }
+
 
         public TeamErrorCodes CreateTeam(TeamDTO teamDTO, string UserID)
         {
@@ -30,12 +44,16 @@ namespace Logic.Teams
             }
             teamDTO.TeamID = idGenerator.GenerateID(12);
             teamManagerDB.CreateTeam(teamDTO);
-            Team team = new Team(teamDTO);
+            Team team = new Team(teamDTO,source);
             team.AddPlayer(UserID, TeamRoles.Owner);
             return TeamErrorCodes.NoError;
         }
         public Team GetTeamByID(string ID)
         {
+            if(ID == null || ID == string.Empty)
+            {
+                return null;
+            }
             var teamDTO = teamManagerDB.FindTeamByID(ID);
             if (teamDTO == null)
             {
@@ -48,6 +66,10 @@ namespace Logic.Teams
 
         public UserTeamDTO GetUserTeam(string UserID)
         {
+            if(UserID == null || UserID == string.Empty)
+            {
+                return null;
+            }
             var TeamDTO = teamManagerDB.FindTeamByUser(UserID);
             var team = new Team(TeamDTO);
             var role = teamManagerDB.GetUserTeamRole(UserID);
@@ -61,6 +83,10 @@ namespace Logic.Teams
 
         public Team GetTeamByUser(string UserID)
         {
+            if (UserID == null || UserID == string.Empty)
+            {
+                return null;
+            }
             var TeamDTO = teamManagerDB.FindTeamByUser(UserID);
             if (TeamDTO == null)
             {

@@ -36,6 +36,20 @@ namespace Logic.Teams
             Language = teamDTO.Language;
             PlayedGame = teamDTO.PlayedGame;
         }
+        public Team(TeamDTO teamDTO, string source)
+        {
+
+            TeamID = teamDTO.TeamID;
+            TeamName = teamDTO.TeamName;
+            MinimumAge = teamDTO.MinimumAge;
+            MinimumElo = teamDTO.MinimumElo;
+            IsPrivate = teamDTO.IsPrivate;
+            Description = teamDTO.Description;
+            Country = teamDTO.Country;
+            Language = teamDTO.Language;
+            PlayedGame = teamDTO.PlayedGame;
+            teamDB = TeamFactory.GetTeamDB(source);
+        }
 
         public Team()
         {
@@ -63,12 +77,20 @@ namespace Logic.Teams
 
         public bool AddPlayer(string UserId,TeamRoles role)
         {
+            if(UserId == null || UserId == string.Empty)
+            {
+                return false;
+            }
+            if(role == TeamRoles.NonMember)
+            {
+                return false;
+            }
             return teamDB.AddPlayerToTeam(UserId, this.TeamID, (int)role);
         }
 
         public List<string> GetMembers() => teamDB.GetMembers(TeamID);
         
-
+        //All code past here is WIP
         public void RecieveInvite()
         {
             throw new NotImplementedException();
