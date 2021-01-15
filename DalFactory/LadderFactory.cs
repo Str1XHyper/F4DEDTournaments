@@ -3,6 +3,7 @@ using Interface.Ladder;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TestDAL.Ladder;
 
 namespace DalFactory
 {
@@ -25,6 +26,8 @@ namespace DalFactory
             {
                 case "release":
                     return new LadderDB();
+                case "test":
+                    return new TestLadderDB();
                 default:
                     throw new NotImplementedException();
             }

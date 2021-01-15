@@ -19,6 +19,15 @@ namespace Logic.Match
         IMatchManagerDB matchDB = MatchFactory.GetMatchDB("release");
         Generator idGenerator = new Generator();
 
+        public MatchManager(string source)
+        {
+            matchDB = MatchFactory.GetMatchDB(source);
+        }
+        public MatchManager()
+        {
+
+        }
+
         public MatchErrorCodes CreateMatch(MatchDTO matchDTO)
         {
             matchDTO.ID = idGenerator.GenerateID(12);

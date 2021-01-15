@@ -49,6 +49,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ladders\LadderManagerTests.cs" />
+    <Compile Include="Match\MatchManagerTests.cs" />
+    <Compile Include="Organisation\OrganisationManagerTests.cs" />
     <Compile Include="Teams\TeamManagerTests.cs" />
     <Compile Include="Teams\TeamTests.cs" />
     <Compile Include="Tournament\TournamentManagerTests.cs" />

@@ -20,7 +20,24 @@ namespace Logic.Organisation
         IOrganisationManagerDB organisationDB = OrganisationFactory.GetOrganisationManagerDB("release");
         Generator idGenerator = new Generator();
 
-        public OrganisationDTO GetOrganisationByID(string ID) => organisationDB.FindOrganisationByID(ID);
+        public OrganisationManager(string source)
+        {
+            organisationDB = OrganisationFactory.GetOrganisationManagerDB(source);
+        }
+        public OrganisationManager()
+        {
+
+        }
+
+        public OrganisationDTO GetOrganisationByID(string ID)
+        {
+            if(ID == null || ID == string.Empty)
+            {
+                return null;
+            }
+
+            return organisationDB.FindOrganisationByID(ID);
+        }
 
         public OrganisationErrorCodes CreateOrganisation(OrganisationDTO organisationDTO)
         {

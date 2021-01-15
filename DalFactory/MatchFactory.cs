@@ -3,6 +3,7 @@ using Interface.Match;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TestDAL.Match;
 
 namespace DalFactory
 {
@@ -15,6 +16,8 @@ namespace DalFactory
             {
                 case "release":
                     return new MatchDB();
+                case "test":
+                    return new TestMatchDB();
                 default:
                     throw new NotImplementedException();
             }

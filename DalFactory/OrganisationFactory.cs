@@ -3,6 +3,7 @@ using Interface.Organisation;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TestDAL.Organisation;
 
 namespace DalFactory
 {
@@ -24,6 +25,8 @@ namespace DalFactory
             {
                 case "release":
                     return new OrganisationDB();
+                case "test":
+                    return new TestOrganisationDB();
                 default:
                     throw new NotImplementedException();
             }

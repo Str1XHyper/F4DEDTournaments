@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestDAL", "TestDAL\TestDAL.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F4DEDTournamentTests", "F4DEDTournamentTests\F4DEDTournamentTests.csproj", "{1A02BEBE-8131-48E5-9C9D-ECA043C699C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DalFactory", "DalFactory\DalFactory.csproj", "{3027CE69-CC94-4B1C-9AF0-A11602C9F149}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DalFactory", "DalFactory\DalFactory.csproj", "{3027CE69-CC94-4B1C-9AF0-A11602C9F149}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
